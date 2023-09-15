@@ -1,0 +1,5 @@
+l, m, n = 7, 10, 5
+sum = 0
+for k in range(20):
+    sum += 2*(n+l+(k+1)*m)
+print(sum)
