@@ -2,6 +2,7 @@ using System;
 class HelloWorld {
   static void Main() {
     Console.WriteLine("Введите номер программы:");
+    int p = Convert.ToInt32(Console.ReadLine());
     switch (p)
     {
         case 1:
