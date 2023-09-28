@@ -1,0 +1,59 @@
+using System;
+class HelloWorld {
+  static void Main() {
+    Console.WriteLine("Введите номер программы:");
+    int p = Convert.ToInt32(Console.ReadLine());
+    switch (p)
+    {
+        case 5:
+            int n1 = Convert.ToInt32(Console.ReadLine());
+            int answ5 = 0;
+            int pred_elem = 0;
+            for (int i = 0; i < n1; i++){
+                int k = Convert.ToInt32(Console.ReadLine());
+                if (i >= 1){
+                    if (k < pred_elem){
+                        answ5++;
+                    }
+                }
+                pred_elem = k;
+            }
+            Console.WriteLine(answ5);
+            break;
+        case 6:
+            int n2 = Convert.ToInt32(Console.ReadLine());
+            int answ6 = 0;
+            int min_elem = 0;
+            for (int i = 0; i < n2; i++){
+                int k = Convert.ToInt32(Console.ReadLine());
+                if (i >= 1){
+                    if (k < min_elem){
+                        answ6++;
+                        min_elem = k;
+                    }
+                else {
+                    min_elem = k;
+                }
+                }
+            }
+            Console.WriteLine(answ6);
+            break;
+        case 7:
+            int n3 = Convert.ToInt32(Console.ReadLine());
+            int answ7 = 0;
+            int pred_elem1 = 0;
+            for (int i = 0; i < n3; i++){
+                int k = Convert.ToInt32(Console.ReadLine());
+                if (i >= 1){
+                    if ((pred_elem1 >= 0 && k < 0) || (pred_elem1 < 0 && k >= 0)){
+                        answ7++;
+                    }
+                }
+                pred_elem1 = k;
+            }
+            Console.WriteLine(answ7);
+            break;
+    }
+    
+  }
+}
