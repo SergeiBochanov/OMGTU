@@ -36,7 +36,7 @@ class HelloWorld {
                int k = Convert.ToInt32(Console.ReadLine());
                if (k%3==k%5)
                {
-                   answ3++;
+                   answ3+=k;
                }
             }
             Console.WriteLine(answ3);
