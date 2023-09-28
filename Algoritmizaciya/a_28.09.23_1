@@ -2,7 +2,6 @@ using System;
 class HelloWorld {
   static void Main() {
     Console.WriteLine("Введите номер программы:");
-    Console.WriteLine(p/3);
     switch (p)
     {
         case 1:
