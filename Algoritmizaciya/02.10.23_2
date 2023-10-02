@@ -1,1 +1,42 @@
-
+using System;
+class HelloWorld {
+  static void Main() {
+    Console.Write("Номер программы: ");
+    int k = Convert.ToInt32(Console.ReadLine());
+    int n = Convert.ToInt32(Console.ReadLine());
+    int count = 0;
+    switch (k) {
+        case 1:
+            for (int i = 0; i < n; i++) {
+                int a = Convert.ToInt32(Console.ReadLine());
+                a = Math.Abs(a);
+                while (a != 0) {
+                    if (a % 10 == 3) {
+                        count ++;
+                        break;
+                    }
+                    a = a/10;
+                }
+            }
+            Console.WriteLine("Количество элементов, заканчивающихся на 3: " + count);
+            break;
+        case 2:
+            int mina = 0;
+            for (int i = 0; i < n; i++) {
+                int a = Convert.ToInt32(Console.ReadLine());
+                if (mina == 0 && a % 2 != 0) mina = a;
+                if (mina != 0 && a % 2 != 0 && mina > a) mina = a;
+            }
+            Console.WriteLine("Наименьший нечётный элемент: " + mina);
+            break;
+        case 3:
+            for (int i = 0; i < n; i++) {
+                int a = Convert.ToInt32(Console.ReadLine());
+                a = Math.Abs(a);
+                if (a % 3 == a % 5 && a % 5 == a % 7) count++;
+            }
+            Console.WriteLine("Количество элементов, заканчивающихся одинаково в троичной, пятеричной и семеричной системах счисления: " + count);
+            break;
+    }
+  }
+}
