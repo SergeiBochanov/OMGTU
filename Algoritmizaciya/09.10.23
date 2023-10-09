@@ -1,0 +1,43 @@
+using System;
+class HelloWorld {
+  static void Main() {
+    Console.Write("Введите число мышек: ");
+    int k = Convert.ToInt32(Console.ReadLine());
+    Console.Write("Введите позицию белой мышки: ");
+    int pos = Convert.ToInt32(Console.ReadLine());
+    Console.Write("Введите шаг кота: ");
+    int m = Convert.ToInt32(Console.ReadLine());
+    int[] a = new int[k];
+    int sum = 0;
+    for (int i = 0; i < a.Length; i++){
+        a[i] = 1;
+        sum++;
+    }
+    int p = 0;
+    int counter = 0;
+    if (sum == 1)
+    {
+        Console.WriteLine("Никого съесть не удастся");
+    }
+    else
+    {
+        while (sum != 1){
+            if (p == m && a[counter % a.Length] == 1) {
+                a[counter % a.Length] = 0;
+                sum--;
+                p = 1;
+                counter++;
+            }
+            else {
+                if (p != m && a[counter % a.Length] == 1){
+                    p++;
+                }
+                counter++;
+            }
+        }
+        int mouseIndex = Array.IndexOf(a, 1);
+        int startPoint = Math.Abs(mouseIndex - pos);
+        Console.WriteLine($"Начните с {startPoint}-ой");
+    }
+  }
+}
