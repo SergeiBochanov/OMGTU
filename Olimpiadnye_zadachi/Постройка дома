@@ -1,0 +1,18 @@
+x, y, l, c1, c2, c3, c4, c5, c6 = map(int, input().split())
+totalCost = 0
+wallsSum = 2*x+2*y
+if c1 == min(c1, c2+c3, c2+c5+c4+c6):
+    if l < max(x, y):
+        wallsSum -= l
+        totalCost += c1*l + (c4+c5)* wallsSum
+    else:
+        if wallsSum - l >= 0:
+            totalCost += c1 * max(x, y) + min(c2+c3, c2+c5+c4+c6) * (l - max(x,y)) + (c4+c5) * (wallsSum - l)
+        else:
+            totalCost += c1 * max(x, y) + min(c2+c3, c2+c5+c4+c6) * (wallsSum - max(x,y)) + (c2+c6) * (l - wallsSum)
+else:
+    if wallsSum - l >= 0:
+        totalCost += min(c2+c3, c2+c5+c4+c6) * l + (c4+c5) * (wallsSum - l)
+    else:
+        totalCost += min(c2+c3, c2+c5+c4+c6) * wallsSum + (c2+c6) * (l - wallsSum)
+print(totalCost)
