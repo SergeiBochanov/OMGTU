@@ -1,0 +1,51 @@
+using System;
+class HelloWorld {
+  static void Main() {
+    Console.Write("Введите кол-во городов: ");
+    int k = Convert.ToInt32(Console.ReadLine());
+    Console.Write($"Введите n: ");
+    int n = Convert.ToInt32(Console.ReadLine());
+    int[] distances = new int[k];
+    int summa = 0;
+    for (int i = 0; i < k; i++)
+    {
+        distances[i] = Convert.ToInt32(Console.ReadLine());
+        summa += distances[i];
+    }
+    int townsPassed = 1;
+    int townsLeft = k-1;
+    int distanceToNextTown = 0;
+    int distanceFromLastTown = 0;
+    int minSumma = summa;
+    int minValue = -1;
+    for (int i = 1; i < distances[k-1]; i++)
+    {
+        summa -= townsLeft;
+        summa += townsPassed;
+        distanceToNextTown = distances[townsPassed] - i;
+        distanceFromLastTown += 1;
+        if (distanceToNextTown == 0)
+        {
+            townsPassed += 1;
+            townsLeft -= 1;
+            distanceFromLastTown = 0;
+        }
+        if (distanceToNextTown >= n && distanceFromLastTown >= n)
+        {
+            if (minSumma < summa)
+            {
+                minValue = i;
+                break;
+            }
+            minValue = i;
+            minSumma = summa;
+        }
+    }
+    if (minValue == -1)
+    {
+        Console.WriteLine("Нельзя расположить заправку");
+    } else {
+        Console.WriteLine($"Километр: {minValue} Сумма: {minSumma}");
+    }
+  }
+}
