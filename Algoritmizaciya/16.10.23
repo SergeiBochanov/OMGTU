@@ -1,5 +1,5 @@
 using System;
-class ConsoleApp4
+class HelloWorld
 {
     static void Main()
     {
