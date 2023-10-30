@@ -1,0 +1,108 @@
+using System;
+
+namespace ConsoleApp6
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Write("Введите число элементов ступенчатого массива: ");
+            int n = Convert.ToInt32(Console.ReadLine());
+            int[][] arr = new int[n][];
+            int[] unification = new int[0];
+            for (int i = 0; i<n; i++)
+            {
+                Console.Write($"Введите число элементов {i+1} массива: ");
+                int p = Convert.ToInt32(Console.ReadLine());
+                arr[i] = new int[p];
+                Console.Write($"Введите элементы {i+1} массива: ");
+                string[] values = Console.ReadLine().Split();
+                for (int j = 0; j<p; j++)
+                {
+                    arr[i][j] = Convert.ToInt32(values[j]);
+                    if (!Array.Exists(unification, element => element == arr[i][j]) || Count(arr[i][j], unification, values))
+                    {
+                        Array.Resize(ref unification, unification.Length + 1);
+                        unification[unification.Length - 1] = arr[i][j];
+                    }
+                }
+            }
+            int[] intersection = new int[unification.Length];
+            unification.CopyTo(intersection, 0);
+            foreach (int[] i in arr)
+            {
+                int[] deleteList = new int[0];
+                foreach (int j in intersection)
+                {
+                    if (!Array.Exists(i, element => element == j) || CountIntersection(j, intersection, i, deleteList))
+                    {
+                        Array.Resize(ref deleteList, deleteList.Length + 1);
+                        deleteList[deleteList.Length - 1] = j;
+                    }
+                }
+                foreach (int k in deleteList)
+                {
+                    intersection[Array.IndexOf(intersection, k)] = intersection[intersection.Length - 1];
+                    Array.Resize(ref intersection, intersection.Length - 1);
+                }
+            }
+            Array.Sort(unification);
+            Array.Sort(intersection);
+            Console.Write("Объединение всех множеств: ");
+            foreach (int i in unification) Console.Write($"{i} ");
+            Console.Write("\nПересечение всех множеств: ");
+            foreach (int i in intersection) Console.Write($"{i} ");
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                int[] unificationCopy = new int[unification.Length];
+                unification.CopyTo(unificationCopy, 0);
+                int[] deleteList = new int[0];
+                foreach (int j in unificationCopy)
+                {
+                    if (Array.Exists(arr[i], element => element == j) && CountAddition(j, intersection, arr[i], deleteList))
+                    {
+                        Array.Resize(ref deleteList, deleteList.Length + 1);
+                        deleteList[deleteList.Length - 1] = j;
+                    }
+                }
+                foreach (int k in deleteList)
+                {
+                    unificationCopy[Array.IndexOf(unificationCopy, k)] = unificationCopy[unificationCopy.Length - 1];
+                    Array.Resize(ref unificationCopy, unificationCopy.Length - 1);
+                }
+                Array.Sort(unificationCopy);
+                Console.Write($"\nДополнение для множества {i+1}: ");
+                foreach (int z in unificationCopy) Console.Write($"{z} ");
+            }
+        }
+
+            static bool Count(int number, int[] unification, string[] values)
+            {
+                int countInt = 0, countStr = 0;
+                foreach (int i in unification) if (i == number) countInt++;
+                foreach (string i in values) if (Convert.ToInt32(i) == number) countStr++;
+                if (countStr > countInt) return true;
+                else return false;
+            }
+            static bool CountIntersection(int number, int[] unification, int[] values, int[] deleteList)
+            {
+                int countInt = 0, countStr = 0, countDel = 0;
+                foreach (int i in unification) if (i == number) countInt++;
+                foreach (int i in values) if (i == number) countStr++;
+                foreach (int i in deleteList) if (i == number) countDel++;
+                if (countInt - countDel > countStr) return true;
+                else return false;
+            }
+            static bool CountAddition(int number, int[] unification, int[] values, int[] deleteList)
+            {
+                int countInt = 0, countStr = 0, countDel = 0;
+                foreach (int i in unification) if (i == number) countInt++;
+                foreach (int i in values) if (i == number) countStr++;
+                foreach (int i in deleteList) if (i == number) countDel++;
+                if (countStr > countDel) return true;
+                else return false;
+            }
+          
+    }
+}
