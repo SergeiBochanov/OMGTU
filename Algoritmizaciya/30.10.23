@@ -1,0 +1,88 @@
+using System;
+class HelloWorld
+{
+    static void Main()
+    {
+        Console.WriteLine("Введите значения через пробел:");
+        string[] per = Console.ReadLine().Split();
+        int n = Convert.ToInt32(per[0]);
+        int m = Convert.ToInt32(per[1]);
+        int k = Convert.ToInt32(per[2]);
+        int n1 = Convert.ToInt32(per[3]);
+        int m1 = Convert.ToInt32(per[4]);
+        int[] a = new int[n + m];
+        for (int i = 0; i < a.Length; i++) a[i] = 1;
+        int stepNum = 0, allSteps = 0, mousesEaten = 0;
+        if (n == 0 || (n == n1 && n + m - n1 - m1 != 0)) Console.WriteLine("Нельзя разместить");
+        else
+        {
+            if (k == 0 && ((n - n1) != 1 || (m - m1) != 0)) Console.WriteLine("Нельзя разместить");
+            else
+            {
+                while (mousesEaten != (n + m - n1 - m1))
+                {
+                    if (stepNum == k && a[allSteps % (n + m)] == 1)
+                    {
+                        a[allSteps % (n + m)] = 0;
+                        mousesEaten++;
+                        stepNum = 1;
+                    }
+                    else
+                    {
+                        if (a[allSteps % (n + m)] == 1) stepNum++;
+                    }
+                    allSteps++;
+                }
+                string[] output = new string[n + m];
+                int countC = 0, countB = 0;
+                for (int i = 0; i < output.Length; i++)
+                {
+                    if (i == 0)
+                    {
+                        if (a[i] == 1 && n1 > 0) n1--;
+                        else if (a[i] == 1 && n1 == 0) break;
+                        output[i] = "C";
+                        countC++; 
+                    }
+                    else if (a[i] == 1)
+                    {
+                        if (n1 > 0)
+                        {
+                            output[i] = "C";
+                            countC++;
+                            n1--;
+                        }
+                        else
+                        {
+                            if (m1 > 0)
+                            {
+                                output[i] = "Б";
+                                countB++;
+                                m1--;
+                            }
+                            else break;
+                        }
+                    }
+                    else
+                    {
+                        if (n - countC > 0)
+                        {
+                            output[i] = "C";
+                            countC++;
+                        }
+                        else
+                        {
+                            output[i] = "Б";
+                            countB++;
+                        }
+                    }
+                }
+                if (countB == m && countC == n)
+                {
+                    foreach (string z in output) Console.Write($"{z} ");
+                }
+                else Console.WriteLine("Нельзя разместить");
+            }
+        }
+    }
+}
