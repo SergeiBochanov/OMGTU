@@ -1,0 +1,5 @@
+import math
+
+n = int(input())
+k = int(math.log(n,2))
+print(int(2**(k-1) - abs((2**k + 2**(k+1))/2 - n) if n > 4 else 0))
