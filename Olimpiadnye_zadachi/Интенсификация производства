@@ -1,0 +1,39 @@
+normalYearMonths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+leapYearMonths = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+startDay, startMonth, startYear = list(map(int, input().split(sep=".")))
+endDay, endMonth, endYear = list(map(int, input().split(sep=".")))
+difference = 0
+if startYear == endYear:
+    while endMonth != startMonth:
+        if startYear % 4 == 0:
+            difference += leapYearMonths[startMonth - 1] - startDay + 1
+        else:
+            difference += normalYearMonths[startMonth - 1] - startDay + 1
+        startDay = 1
+        startMonth += 1
+    difference += endDay - startDay
+else:
+    if startYear % 4 == 0: difference += leapYearMonths[startMonth - 1] - startDay + 1 + sum(leapYearMonths[startMonth:12])
+    else: difference += normalYearMonths[startMonth - 1] - startDay + 1 + sum(normalYearMonths[startMonth:12])
+    startYear += 1
+    startMonth = 1
+    startDay = 1
+    while startYear != endYear:
+        if startYear % 4 == 0: difference += 366
+        else: difference += 365
+        startYear += 1
+    while endMonth != startMonth:
+        if startYear % 4 == 0:
+            difference += leapYearMonths[startMonth - 1] - startDay + 1
+        else:
+            difference += normalYearMonths[startMonth - 1] - startDay + 1
+        startDay = 1
+        startMonth += 1
+    difference += endDay - startDay
+p = int(input())
+summa = p
+while difference != 0:
+    p += 1
+    summa += p
+    difference -= 1
+print(summa)
