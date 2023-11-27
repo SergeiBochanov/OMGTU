@@ -1,0 +1,70 @@
+using System;
+
+namespace ConsoleApp12
+{
+    class Car
+    {
+        public int releaseYear { get; set; }
+        public string color { get; set; }
+        public string brand { get; set; }
+        public string FIO { get; set; }
+        public int inspectionYear { get; set; }
+
+        public Car(int releaseYear, string color, string brand, string FIO, int inspectionYear)
+        {
+            this.releaseYear = releaseYear;
+            this.color = color;
+            this.brand = brand;
+            this.FIO = FIO;
+            this.inspectionYear = inspectionYear;
+        }
+
+        public void SelectionReleaseYear(int requiredValue, Car car)
+        {
+            if (car.releaseYear == requiredValue) car.Print();
+        }
+        public void SelectionBrand(string requiredValue, Car car)
+        {
+            if (car.brand == requiredValue) car.Print();
+        }
+        public void SelectionInspectionYear(int requiredValue, Car car)
+        {
+            if (car.inspectionYear == requiredValue) car.Print();
+        }
+        public void SelectionFIO(string requiredValue, Car car)
+        {
+            if (car.FIO == requiredValue) car.Print();
+        }
+        public void Print()
+        {
+            Console.WriteLine($"{releaseYear}, {color}, {brand}, {FIO}, {inspectionYear}");
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Write("Введите число машин: ");
+            int n = Convert.ToInt32(Console.ReadLine());
+            Car[] cars = new Car[n];
+            for (int i = 0; i<n; i++)
+            {
+                Console.Write($"Введите данные {i + 1}-ой машины через запятую: ");
+                string[] data = Console.ReadLine().Split(separator: ",");
+                cars[i] = new Car(Convert.ToInt32(data[0]), data[1].Trim(), data[2].Trim(), data[3].Trim(), Convert.ToInt32(data[4]));
+            }
+            Console.Write("Введите год выпуска: ");
+            int requiredYear = Convert.ToInt32(Console.ReadLine());
+            foreach (Car car in cars) car.SelectionReleaseYear(requiredYear, car);
+            Console.Write("Введите марку: ");
+            string requiredBrand = Console.ReadLine();
+            foreach (Car car in cars) car.SelectionBrand(requiredBrand, car);
+            Console.Write("Введите год техосмотра: ");
+            int requiredInspYear = Convert.ToInt32(Console.ReadLine());
+            foreach (Car car in cars) car.SelectionInspectionYear(requiredInspYear, car);
+            Console.Write("Введите ФИО: ");
+            string requiredFIO = Console.ReadLine();
+            foreach (Car car in cars) car.SelectionFIO(requiredFIO, car);
+        }
+    }
+}
