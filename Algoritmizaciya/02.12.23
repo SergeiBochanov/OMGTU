@@ -1,0 +1,78 @@
+using System;
+
+namespace ConsoleApp12
+{
+    class Car
+    {
+        public string name { get; set; }
+        public int releaseYear { get; set; }
+        public string[] owners { get; set; }
+        public int[] inspectionYears { get; set; }
+        public string color { get; set; }
+        public int engineType { get; set; }
+
+        public Car(string name, int releaseYear, string[] owners, int[] inspectionYears, string color, int engineType)
+        {
+            this.releaseYear = releaseYear;
+            this.color = color;
+            this.name = name;
+            this.owners = owners;
+            this.inspectionYears = inspectionYears;
+            this.engineType = engineType;
+        }
+
+        public void SelectionName(string requiredValue, Car car)
+        {
+            if (car.name == requiredValue)
+            {
+                foreach (string owner in owners) Console.WriteLine(owner);
+            }
+        }
+        public void SelectionInspectionYear(int requiredValue, Car car)
+        {
+            foreach (int i in inspectionYears)
+            {
+                if (i == requiredValue) Console.WriteLine(car.name + " ");
+            }
+        }
+        public void OnlyOwner(Car car)
+        {
+            if (car.owners.Length == 1) Console.WriteLine(car.name);
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Write("Введите число машин: ");
+            int n = Convert.ToInt32(Console.ReadLine());
+            Car[] cars = new Car[n];
+            for (int i = 0; i<n; i++)
+            {
+                Console.WriteLine($"Введите данные {i + 1}-ой машины: ");
+                Console.Write("Введите наименование машины: ");
+                string name = Console.ReadLine();
+                Console.Write("Введите год выпуска машины: ");
+                int releaseYear = Convert.ToInt32(Console.ReadLine());
+                Console.Write("Введите список владельцев машины через запятую: ");
+                string[] owners = Console.ReadLine().Split(separator: ",");
+                for (int j = 0; j < owners.Length; j++) owners[j] = owners[j].Trim(); 
+                Console.Write("Введите года, в которые проходился техосмотр: ");
+                int[] inspectionYears = Array.ConvertAll(Console.ReadLine().Split(), int.Parse);
+                Console.Write("Введите цвет машины: ");
+                string color = Console.ReadLine();
+                Console.Write("Введите номер двигателя: ");
+                int engineType = Convert.ToInt32(Console.ReadLine());
+                cars[i] = new Car(name, releaseYear, owners, inspectionYears, color, engineType);
+            }
+            Console.Write("Введите наименование искомой машины: ");
+            string requiredName = Console.ReadLine();
+            foreach (Car car in cars) car.SelectionName(requiredName, car);
+            Console.Write("\nВведите искомый год техосмотра: ");
+            int requiredInspYear = Convert.ToInt32(Console.ReadLine());
+            foreach (Car car in cars) car.SelectionInspectionYear(requiredInspYear, car);
+            Console.WriteLine("\nСписок машин с одним владельцем: ");
+            foreach (Car car in cars) car.OnlyOwner(car);
+        }
+    }
+}
