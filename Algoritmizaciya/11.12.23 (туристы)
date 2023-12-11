@@ -1,0 +1,49 @@
+using System;
+class HelloWorld
+{
+    static void Main()
+    {
+        Console.Write("Время восхода: ");
+        string[] a = Console.ReadLine().Split();
+        int startTime = Convert.ToInt32(a[0]) * 60 + Convert.ToInt32(a[1]);
+        Console.Write("Время заката: ");
+        string[] b = Console.ReadLine().Split();
+        int endTime = Convert.ToInt32(b[0]) * 60 + Convert.ToInt32(b[1]);
+        Console.Write("Скорость в км/ч: ");
+        double movementSpeed = Convert.ToDouble(Console.ReadLine()) / 60;
+        Console.Write("Количество пунктов остановки: ");
+        int restPoints = Convert.ToInt32(Console.ReadLine());
+        double[] restDistances = new double[restPoints+1];
+        restDistances[0] = 0;
+        for (int i = 1; i < restPoints + 1; i++)
+        {
+            Console.Write($"Расстояние до {i}-ого пункта в км: ");
+            restDistances[i] = Convert.ToDouble(Console.ReadLine());
+        }
+
+        string answer = "";
+        int totalDays = 0;
+        int pointsPassed = 1;
+        while (pointsPassed - 1 != restPoints)
+        {
+            int currentTime = startTime;
+            totalDays += 1;
+            while (true)
+            {
+                if ((endTime - currentTime) * movementSpeed > restDistances[pointsPassed] - restDistances[pointsPassed - 1])
+                {
+                    currentTime += Convert.ToInt32(Math.Ceiling((restDistances[pointsPassed] - restDistances[pointsPassed - 1]) / movementSpeed));
+                    pointsPassed += 1;
+                    if (pointsPassed - 1 == restPoints) break;
+                }
+                else
+                {
+                    answer += $"{pointsPassed - 1} ";
+                    break;
+                }
+            }
+        }
+        Console.WriteLine(answer);
+        Console.WriteLine(totalDays + " дней");
+    }
+}
