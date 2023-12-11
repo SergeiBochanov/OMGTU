@@ -1,0 +1,20 @@
+using System;
+class HelloWorld
+{
+    static void Main()
+    {
+        string userInput = Console.ReadLine();
+        int count = 0;
+        while (true)
+        {
+            string a = Console.ReadLine();
+            if (a == "") break;
+            while (a.Contains(userInput) != false)
+            {
+                a = a.Remove(a.IndexOf(userInput), userInput.Length);
+                count++;
+            }
+        }
+        Console.WriteLine(count);
+    }
+}
