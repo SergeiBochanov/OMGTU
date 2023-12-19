@@ -1,0 +1,100 @@
+using System;
+
+class HelloWorld
+{
+    class Shop
+    {
+        public int[] itemInfo = new int[4];
+        public object[] sellInfo = new object[2];
+        public string name { get; set; }
+        public int storageLife { get; set; }
+
+        public Shop (int[] itemInfo, object[] sellInfo, string name, int storageLife)
+        {
+            this.itemInfo = itemInfo;
+            this.sellInfo = sellInfo;
+            this.name = name;
+            this.storageLife = storageLife;
+        }
+
+        int SellsNumber(int date)
+        {
+            int sellsNumber = 0;
+            foreach (int[] i in sellInfo)
+            {
+                if (i[0] <= date) sellsNumber += i[1];
+            }
+            return sellsNumber;
+        }
+        public int SellsSum(int date)
+        {
+            int sellsSum = 0;
+            foreach (int[] i in sellInfo)
+            {
+                if (i[0] <= date) sellsSum += i[1]*itemInfo[3];
+            }
+            return sellsSum;
+        }
+        public int GoodProduct(int date, Shop item)
+        {
+            if (date >= Convert.ToInt32(itemInfo[0]) && date < Convert.ToInt32(itemInfo[1]) + storageLife) return Convert.ToInt32(itemInfo[2]) - item.SellsNumber(date);
+            else return 0;
+        }
+    }
+    static void Main()
+    {
+        Console.Write("Введите количество товаров: ");
+        int n = Convert.ToInt32(Console.ReadLine());
+        Shop[] shop = new Shop[n];
+        for (int i = 0; i < n; i++)
+        {
+            Console.WriteLine($"Введите данные {i+1}-ого товара: ");
+            int[] itemInfo = new int[4];
+            Console.Write("Введите дату поставки через слеш (день/месяц): ");
+            string[] temp = Console.ReadLine().Split(separator: "/");
+            itemInfo[0] = Convert.ToInt32(temp[0]) + 30 * (Convert.ToInt32(temp[1]) - 1);
+            Console.Write("Введите дату изготовления через слеш (день/месяц): ");
+            temp = Console.ReadLine().Split(separator: "/");
+            itemInfo[1] = Convert.ToInt32(temp[0]) + 30 * (Convert.ToInt32(temp[1]) - 1);
+            Console.Write("Введите количество товара: ");
+            itemInfo[2] = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Введите стоимость товара: ");
+            itemInfo[3] = Convert.ToInt32(Console.ReadLine());
+
+            int[][] sellInfo = new int[0][] ;
+            bool stopFlag = true;
+            while (stopFlag)
+            {
+                Array.Resize(ref sellInfo, sellInfo.Length + 1);
+                int[] toAdd = new int[2];
+                Console.Write("Введите дату продажи через слеш (день/месяц): ");
+                temp = Console.ReadLine().Split(separator: "/");
+                toAdd[0] = Convert.ToInt32(temp[0]) + 30 * (Convert.ToInt32(temp[1]) - 1);
+                Console.Write("Введите количество проданного товара: ");
+                toAdd[1] = Convert.ToInt32(Console.ReadLine());
+                sellInfo[sellInfo.Length - 1] = toAdd;
+                Console.Write("Добавить ещё дату? (y/n): ");
+                string add = Console.ReadLine();
+                if (add.ToLower() != "y") stopFlag = false;
+            }
+
+            Console.Write("Введите наименование товара: ");
+            string name = Console.ReadLine();
+
+            Console.Write("Введите срок годности в днях: ");
+            int storageLife = Convert.ToInt32(Console.ReadLine());
+
+            shop[i] = new Shop(itemInfo, sellInfo, name, storageLife);
+        }
+
+        Console.Write("Введите дату (день/месяц): ");
+        string[] userInput = Console.ReadLine().Split(separator: "/");
+        int date = Convert.ToInt32(userInput[0]) + 30 * (Convert.ToInt32(userInput[1]) - 1);
+        int goodItems = 0;
+        int totalSells = 0;
+        foreach (Shop item in shop) goodItems += item.GoodProduct(date, item);
+        Console.WriteLine($"Остатки товаров на продажу: {goodItems}");
+        foreach (Shop item in shop) totalSells += item.SellsSum(date);
+        Console.WriteLine($"Общая сумма продаж: {totalSells}");
+    }
+}
