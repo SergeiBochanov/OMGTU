@@ -1,0 +1,106 @@
+using System;
+
+namespace ConsoleApp13
+{
+    class Animals
+    {
+        public string name { get; set; }
+        public int birthYear { get; set; }
+    }
+    class Dog : Animals
+    {
+        public string breed { get; set; }
+        public string color { get; set; }
+
+        public Dog(string name, int birthYear, string breed, string color)
+        {
+            this.name = name;
+            this.birthYear = birthYear;
+            this.breed = breed;
+            this.color = color;
+        }
+
+        public void Print(Dog dog)
+        {
+            Console.WriteLine($"{dog.name}, {dog.birthYear}, {dog.breed}, {dog.color}");
+        }
+    }
+    class Cat : Animals
+    {
+        public string breed { get; set; }
+        public string color { get; set; }
+
+        public Cat(string name, int birthYear, string breed, string color)
+        {
+            this.name = name;
+            this.birthYear = birthYear;
+            this.breed = breed;
+            this.color = color;
+        }
+        public void Print(Cat cat)
+        {
+            Console.WriteLine($"{cat.name}, {cat.birthYear}, {cat.breed}, {cat.color}");
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Write("Введите количество собак: ");
+            int n = Convert.ToInt32(Console.ReadLine());
+            Dog[] dogs = new Dog[n];
+            for (int i = 0; i<n; i++)
+            {
+                Console.Write($"Введите имя {i+1}-ой собаки: ");
+                string name = Console.ReadLine();
+                Console.Write($"Введите год рождения {i+1}-ой собаки: ");
+                int birthYear = Convert.ToInt32(Console.ReadLine());
+                Console.Write($"Введите породу {i + 1}-ой собаки: ");
+                string breed = Console.ReadLine();
+                Console.Write($"Введите окрас {i + 1}-ой собаки: ");
+                string color = Console.ReadLine();
+                dogs[i] = new Dog(name, birthYear, breed, color);
+            }
+            Console.Write("Введите количество кошек: ");
+            int m = Convert.ToInt32(Console.ReadLine());
+            Cat[] cats = new Cat[m];
+            for (int i = 0; i < m; i++)
+            {
+                Console.Write($"Введите имя {i + 1}-ой кошки: ");
+                string name = Console.ReadLine();
+                Console.Write($"Введите год рождения {i + 1}-ой кошки: ");
+                int birthYear = Convert.ToInt32(Console.ReadLine());
+                Console.Write($"Введите породу {i + 1}-ой кошки: ");
+                string breed = Console.ReadLine();
+                Console.Write($"Введите окрас {i + 1}-ой кошки: ");
+                string color = Console.ReadLine();
+                cats[i] = new Cat(name, birthYear, breed, color);
+            }
+            Console.Write("Менять породу кошек? (y/n) ");
+            string answer = Console.ReadLine();
+            while (answer == "y")
+            {
+                Console.Write("Введите старую и новую породу через пробел: ");
+                string[] breeds = Console.ReadLine().Split();
+                foreach (Cat cat in cats)
+                {
+                    if (cat.breed == breeds[0]) cat.breed = breeds[1];
+                }
+                Console.Write("Поменять ещё какую-нибудь породу? (y/n) ");
+                answer = Console.ReadLine();
+            } 
+            Console.Write("Собак с какой породой искать? ");
+            string searchBreed = Console.ReadLine();
+            foreach (Dog dog in dogs)
+            {
+                if (dog.breed == searchBreed) dog.Print(dog);
+            }
+            Console.Write("Кошек с каким окрасом искать? ");
+            string searchColor = Console.ReadLine();
+            foreach (Cat cat in cats)
+            {
+                if (cat.color == searchColor) cat.Print(cat);
+            }
+        }
+    }
+}
