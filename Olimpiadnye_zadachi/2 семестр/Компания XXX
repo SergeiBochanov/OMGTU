@@ -1,0 +1,48 @@
+dictionary = {}
+names = {}
+
+while True:
+    boss = input()
+    if boss.lower() == "end": break
+    worker = input()
+    bossID = boss[:4]
+    workerID = worker[:4]
+    if dictionary.get(bossID) == None: dictionary[bossID] = workerID
+    else: dictionary[bossID] += f" {workerID}"
+    if len(boss) != 4: names[bossID] = boss[5:]
+    if len(worker) != 4: names[workerID] = worker[5:]
+
+search = input()
+toPrint = {}
+
+if len(search) == 4 and search[0] in '0123456789' and search[1] in '0123456789' and search[2] in '0123456789' and search[3] in '0123456789':
+    searchID = search[:4]
+else:
+    for i in names:
+        if names.get(i) == search:
+            searchID = i
+            break
+
+if dictionary.get(searchID) == None: print("NO")
+else:
+    searchList = [searchID]
+    searchListTemp = []
+    while True:
+        for k in searchList:
+            if dictionary.get(k) != None:
+                workers = dictionary.get(k).split()
+                for i in workers:
+                    if names.get(i) != None: toPrint[i] = names[i]
+                    else: toPrint[i] = "Unknown Name"
+                    searchListTemp.append(i)
+
+        searchList = searchListTemp
+        searchListTemp = []
+        if len(searchList) == 0: break
+
+keys = list(map(int, toPrint))
+keys.sort()
+for i in range(len(keys)):
+    k = str(keys[i])
+    while len(k) != 4: k = "0" + k
+    print(k + " " + toPrint[k])
