@@ -1,0 +1,342 @@
+using System;
+using System.Collections.Generic;
+
+namespace _1._Аудитории
+{
+    class Menu
+    {
+        static List<Audience> audienceList = new List<Audience>();
+
+        public static void UserDisplay()
+        {
+            while(true)
+            {
+                Console.WriteLine("1 - Добавление аудитории");
+                Console.WriteLine("2 - Изменение данных об аудитории");
+                Console.WriteLine("3 - Поиск аудиторий с необходимым количеством мест");
+                Console.WriteLine("4 - Поиск аудиторий с необходимым количеством мест и проектором");
+                Console.WriteLine("5 - Поиск аудиторий с необходимым количеством мест и компьютерами");
+                Console.WriteLine("6 - Поиск аудиторий на этаже");
+                Console.WriteLine("7 - Полный список аудиторий");
+                Console.WriteLine("8 - Выход\n");
+                string option = Console.ReadLine();
+                if (Int32.TryParse(option, out int i) && (1 <= i && i <= 8))
+                {
+                    bool quit = false;
+                    switch (i)
+                    {
+                        case 1:
+                            Console.Clear();
+                            AddAudience();
+                            break;
+                        case 2:
+                            Console.Clear();
+                            ChangeData();
+                            break;
+                        case 3:
+                            Console.Clear();
+                            Audience.FindInfo(1, audienceList);
+                            break;
+                        case 4:
+                            Console.Clear();
+                            Audience.FindInfo(2, audienceList);
+                            break;
+                        case 5:
+                            Console.Clear();
+                            Audience.FindInfo(3, audienceList);
+                            break;
+                        case 6:
+                            Console.Clear();
+                            Audience.FindInfo(4, audienceList);
+                            break;
+                        case 7:
+                            Console.Clear();
+                            Audience.FindInfo(5, audienceList);
+                            break;
+                        case 8:
+                            Console.Clear();
+                            quit = true;
+                            break;
+                    }
+                    if (quit) break;
+                }
+                else Console.WriteLine("Некорректный ввод");
+            }
+        }
+        public static void AddAudience()
+        {
+            int seats = 0, floor = 0, audience = 0;
+            while (true)
+            {
+                Console.Write("Введите количество посадочных мест в аудитории: ");
+                if (Int32.TryParse(Console.ReadLine(), out int a))
+                {
+                    seats = a;
+                    break;
+                }
+                else Console.WriteLine("Некорректный ввод");
+            }
+            Console.Write("В аудитории есть проектор? (y/n) ");
+            bool haveProjector = false;
+            while (true)
+            {
+                string option = Console.ReadLine().ToLower();
+                if (option != "y" && option != "n")
+                {
+                    Console.Write("Неправильный ввод, попробуйте ещё раз: ");
+                    continue;
+                }
+                if (option == "y") haveProjector = true;
+                break;
+            }
+            Console.Write("В аудитории есть компьютеры? (y/n) ");
+            bool haveComputers = false;
+            while (true)
+            {
+                string option = Console.ReadLine().ToLower();
+                if (option != "y" && option != "n")
+                {
+                    Console.Write("Неправильный ввод, попробуйте ещё раз: ");
+                    continue;
+                }
+                if (option == "y") haveComputers = true;
+                break;
+            }
+            while (true)
+            {
+                Console.Write("Введите этаж аудитории: ");
+                string fl = Console.ReadLine();
+                Console.Write("Введите номер аудитории: ");
+                string aud = Console.ReadLine();
+                if (Int32.TryParse(fl, out int f) && Int32.TryParse(aud, out int ad))
+                {
+                    floor = f;
+                    audience = ad;
+                    break;
+                }
+                else Console.WriteLine("Некорректный ввод");
+            }
+            audienceList.Add(new Audience(seats, haveProjector, haveComputers, floor, audience));
+            Console.WriteLine("\nДобавить данные о другой аудитории? (y/n)");
+            while (true)
+            {
+                string option = Console.ReadLine().ToLower();
+                if (option != "y" && option != "n")
+                {
+                    Console.Write("Неправильный ввод, попробуйте ещё раз: ");
+                    continue;
+                }
+                if (option == "y")
+                {
+                    Console.WriteLine("");
+                    AddAudience();
+                }
+                else Console.Clear();
+                break;
+            }
+        }
+        public static void ChangeData()
+        {
+            int floor, audience;
+
+            while (true)
+            {
+                Console.Write("Введите этаж аудитории: ");
+                string fl = Console.ReadLine();
+                Console.Write("Введите номер аудитории: ");
+                string aud = Console.ReadLine();
+                if (Int32.TryParse(fl, out int f) && Int32.TryParse(aud, out int a))
+                {
+                    floor = f;
+                    audience = a;
+                    break;
+                }
+                else Console.WriteLine("Некорректный ввод");
+            }
+
+            bool flag = false;
+            foreach (Audience a in audienceList)
+            {
+                if (a.floor == floor && a.audience == audience) flag = true;
+            }
+            if (!flag)
+            {
+                Console.WriteLine("Такой аудитории нет в списке, возможно, следует её добавить");
+                Console.WriteLine("Нажмите любую клавишу для возвращения в меню");
+                Console.ReadKey();
+                Console.Clear();
+                return;
+            }
+
+            int num = 0;
+            for (int i = 0; i < audienceList.Count; i++)
+            {
+                if (audienceList[i].floor == floor && audienceList[i].audience == audience)
+                {
+                    num = i;
+                    break;
+                }
+            }
+            bool quit = false;
+            while (!quit) {
+                Console.WriteLine("Что вы хотите изменить? \n1 - Количество посадочных мест\n2 - Наличие проектора\n3 - Наличие компьютеров\n4 - Выход");
+                int option = Convert.ToInt32(Console.ReadLine());
+                switch (option)
+                {
+                    case 1:
+                        Console.Write("Введите новое количество посадочных мест: ");
+                        string seats = Console.ReadLine();
+                        while (!Int32.TryParse(seats, out int a))
+                        {
+                            Console.Write("Некорректный ввод, введите ещё раз: ");
+                            seats = Console.ReadLine();
+                        }
+                        audienceList[num].seats = Convert.ToInt32(seats);
+                        Console.WriteLine($"Новое количество мест: {audienceList[num].seats}");
+                        Console.WriteLine("Нажмите любую клавишу для продолжения");
+                        Console.ReadKey();
+                        break;
+                    case 2:
+                        if (audienceList[num].haveProjector == true) Console.Write("В аудитории есть проектор. Изменить данные? (y/n)");
+                        else Console.Write("В аудитории нет проектора. Изменить данные? (y/n) ");
+                        while (true)
+                        {
+                            string change = Console.ReadLine();
+                            if (change != "y" && change != "n")
+                            {
+                                Console.Write("Неправильный ввод, попробуйте ещё раз: ");
+                                continue;
+                            }
+                            if (change == "y")
+                            {
+                                audienceList[num].haveProjector = !audienceList[num].haveProjector;
+                                if (audienceList[num].haveProjector == true) Console.WriteLine("В аудитории теперь есть проектор.");
+                                else Console.WriteLine("В аудитории теперь нет проектора.");
+                            }
+                            Console.WriteLine("Нажмите любую клавишу для продолжения");
+                            Console.ReadKey();
+                            break;
+                        }
+                        break;
+                    case 3:
+                        if (audienceList[num].haveComputers == true) Console.Write("В аудитории есть компьютеры. Изменить данные? (y/n)");
+                        else Console.Write("В аудитории нет компьютеров. Изменить данные? (y/n) ");
+                        while (true)
+                        {
+                            string change = Console.ReadLine();
+                            if (change != "y" && change != "n")
+                            {
+                                Console.Write("Неправильный ввод, попробуйте ещё раз: ");
+                                continue;
+                            }
+                            if (change == "y")
+                            {
+                                audienceList[num].haveComputers = !audienceList[num].haveComputers;
+                                if (audienceList[num].haveComputers == true) Console.WriteLine("В аудитории теперь есть компьютеры.");
+                                else Console.WriteLine("В аудитории теперь нет компьютеров.");
+                            }
+                            Console.WriteLine("Нажмите любую клавишу для продолжения");
+                            Console.ReadKey();
+                            break;
+                        }
+                        break;
+                    case 4:
+                        quit = true;
+                        break;
+                }
+                Console.Clear();
+            }
+        }
+    }
+    class Audience
+    {
+        public int seats { get; set; }
+        public bool haveProjector { get; set; }
+        public bool haveComputers { get; set; }
+        public int floor { get; set; }
+        public int audience { get; set; }
+
+        public Audience(int seats, bool haveProjector, bool haveComputers, int floor, int audience)
+        {
+            this.seats = seats;
+            this.haveProjector = haveProjector;
+            this.haveComputers = haveComputers;
+            this.floor = floor;
+            this.audience = audience;
+        }
+        public static void FindInfo(int request, List<Audience> audienceList)
+        {
+            int requiredSeats = 0, floor = 0;
+            if (request == 1 || request == 2 || request == 3)
+            {
+                while (true)
+                {
+                    Console.Write("Введите необходимое количество мест: ");
+                    if (Int32.TryParse(Console.ReadLine(), out int a))
+                    {
+                        requiredSeats = a;
+                        break;
+                    }
+                    else Console.WriteLine("Некорректный ввод");
+                }
+            }
+            else if (request == 4)
+            {
+                while (true)
+                {
+                    Console.Write("Введите необходимый этаж: ");
+                    if (Int32.TryParse(Console.ReadLine(), out int a))
+                    {
+                        floor = a;
+                        break;
+                    }
+                    else Console.WriteLine("Некорректный ввод");
+                }
+            }
+            switch (request)
+            {
+                case 1:
+                    foreach (Audience a in audienceList)
+                    {
+                        if (a.seats >= requiredSeats) Print(a);
+                    }
+                    break;
+                case 2:
+                    foreach (Audience a in audienceList)
+                    {
+                        if (a.seats >= requiredSeats && a.haveProjector == true) Print(a);
+                    }
+                    break;
+                case 3:
+                    foreach (Audience a in audienceList)
+                    {
+                        if (a.seats >= requiredSeats && a.haveComputers == true) Print(a);
+                    }
+                    break;
+                case 4:
+                    foreach (Audience a in audienceList)
+                    {
+                        if (a.floor == floor) Print(a);
+                    }
+                    break;
+                case 5:
+                    foreach (Audience a in audienceList) Print(a);
+                    break;
+            }
+            Console.WriteLine("\nНажмите любую кнопку для выхода в меню");
+            Console.ReadKey();
+            Console.Clear();
+        }
+        public static void Print(Audience a)
+        {
+            Console.WriteLine($"{a.floor}-{a.audience}: {a.seats} мест(а), есть проектор: {a.haveProjector}, есть компьютеры: {a.haveComputers}");
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Menu.UserDisplay();
+        }
+    }
+}
