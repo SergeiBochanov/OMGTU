@@ -1,0 +1,42 @@
+peaks = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+paths = [[1, 2, 15], [1, 5, 14], [1, 4, 23], [2, 3, 19], [2, 4, 16], [2 ,5, 15], [3, 5, 14], [3 ,6, 26],
+         [4, 5, 25], [4, 7, 23], [4, 8, 20], [5, 6, 24], [5, 8, 27], [5, 9, 18], [7, 8, 14], [8, 9, 18]]
+paths.sort(key=lambda x: x[2])
+visitedPeaks = [[paths[0][0], paths[0][1]]]
+visitedPeaksWeights = [paths[0][2]]
+paths.pop(0)
+for i in paths:
+    containsFirst = False
+    containsSecond = False
+    for j in visitedPeaks:
+        if i[0] in j: containsFirst = True
+        if i[1] in j: containsSecond = True
+    if containsFirst == False and containsSecond == False:
+        visitedPeaks.append([i[0], i[1]])
+        visitedPeaksWeights.append(i[2])
+    elif containsFirst == True and containsSecond == True:
+        flag = False
+        for j in visitedPeaks:
+            for k in visitedPeaks:
+                if i[0] in j and i[1] in k:
+                    if k == j:
+                        flag = True
+                        break
+                    else:
+                        for p in k: j.append(p)
+                        visitedPeaksWeights[visitedPeaks.index(j)] += visitedPeaksWeights[visitedPeaks.index(k)] + i[2]
+                        visitedPeaksWeights.pop(visitedPeaks.index(k))
+                        visitedPeaks.pop(visitedPeaks.index(k))
+                        flag = True
+                        break
+            if flag: break
+    else:
+        for j in visitedPeaks:
+            if i[0] in j:
+                j.append(i[1])
+                visitedPeaksWeights[visitedPeaks.index(j)] += i[2]
+            elif i[1] in j:
+                j.append(i[0])
+                visitedPeaksWeights[visitedPeaks.index(j)] += i[2]
+    if sorted(visitedPeaks[0]) == peaks: break
+print(sum(visitedPeaksWeights))
