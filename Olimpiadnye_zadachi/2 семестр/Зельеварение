@@ -1,0 +1,16 @@
+f = open('input1.txt')
+g = open('output1.txt')
+operations = []
+
+s = [str(i) for i in f]
+for i in s:
+    k = i.split()
+    addStr = ""
+    for j in range(len(k) - 1):
+        if k[j+1].isdigit(): k[j+1] = operations[int(k[j+1]) - 1]
+        addStr += k[j+1]
+    if k[0] == "MIX": operations.append("MX" + addStr + "XM")
+    elif k[0] == "WATER": operations.append("WT" + addStr + "TW")
+    elif k[0] == "DUST": operations.append("DT" + addStr + "TD")
+    elif k[0] == "FIRE": operations.append("FR" + addStr + "RF")
+print(operations[-1])
