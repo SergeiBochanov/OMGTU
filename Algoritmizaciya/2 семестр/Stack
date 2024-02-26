@@ -1,0 +1,41 @@
+using System;
+using System.Collections;
+
+namespace ConsoleApp18
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string text = Console.ReadLine();
+            Stack st = new Stack();
+            bool flag = true;
+            foreach (char i in text)
+            {
+                if ("({[".Contains(i)) st.Push(i);
+                else if (")}]".Contains(i))
+                {
+                    if (st.Count == 0)
+                    {
+                        flag = false;
+                        break;
+                    }
+                    switch (i)
+                    {
+                        case ')':
+                            if (Convert.ToChar(st.Pop()) != '(') flag = false;
+                            break;
+                        case '}':
+                            if (Convert.ToChar(st.Pop()) != '{') flag = false;
+                            break;
+                        case ']':
+                            if (Convert.ToChar(st.Pop()) != '[') flag = false;
+                            break;
+                    }
+                    if (!flag) break;
+                }
+            }
+            Console.WriteLine(flag);
+        }
+    }
+}
