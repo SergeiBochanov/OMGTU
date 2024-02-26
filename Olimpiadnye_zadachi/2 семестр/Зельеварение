@@ -1,5 +1,4 @@
 f = open('input1.txt')
-g = open('output1.txt')
 operations = []
 
 s = [str(i) for i in f]
