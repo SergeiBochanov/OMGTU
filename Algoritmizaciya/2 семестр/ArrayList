@@ -1,0 +1,86 @@
+using System;
+using System.Collections;
+
+namespace ConsoleApp19
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            ArrayList arrayList = new ArrayList{ "1", "7", "3", "9", "8", "6", "5", "2", "4" };
+
+            Console.WriteLine("1 - Count");
+            Console.WriteLine("2 - BinSearch");
+            Console.WriteLine("3 - CopyTo");
+            Console.WriteLine("4 - IndexOf");
+            Console.WriteLine("5 - Insert");
+            Console.WriteLine("6 - Reverse");
+            Console.WriteLine("7 - Sort");
+            Console.WriteLine("8 - Add");
+
+            string choice = Console.ReadLine();
+            Console.Clear();
+            Console.Write("Изначальный динамический массив: ");
+            Print();
+            Console.WriteLine();
+
+            switch (choice)
+            {
+                case "1":
+                    Console.WriteLine("Количество элементов: " + arrayList.Count);
+                    break;
+                case "2":
+                    Console.Write("Какой элемент вы хотите найти: ");
+                    string el = Console.ReadLine();
+                    arrayList.Sort();
+                    Console.WriteLine("Индекс данного элемента в отсортированном массиве: " + arrayList.BinarySearch(el));
+                    break;
+                case "3":
+                    string[] array = new string[arrayList.Count];
+                    arrayList.CopyTo(array);
+                    Console.Write("Скопированный массив: ");
+                    foreach (object i in array) Console.Write($"{i} ");
+                    break;
+                case "4":
+                    Console.Write("Какой элемент вы хотите найти: ");
+                    string elem = Console.ReadLine();
+                    Console.WriteLine("Индекс данного элемента: " + arrayList.IndexOf(elem));
+                    break;
+                case "5":
+                    Console.Write("Какой элемент вы хотите добавить: ");
+                    string element = Console.ReadLine();
+                    Console.Write("Какой индекс будет у элемента: ");
+                    int index = Convert.ToInt32(Console.ReadLine());
+                    arrayList.Insert(index, element);
+                    Console.Write("Динамический массив с новым элементом: ");
+                    Print();
+                    break;
+                case "6":
+                    arrayList.Reverse();
+                    Console.Write("Элементы в обратном порядке: ");
+                    Print();
+                    break;
+                case "7":
+                    arrayList.Sort();
+                    Console.Write("Отсортированные элементы: ");
+                    Print();
+                    break;
+                case "8":
+                    Console.Write("Какой элемент вы хотите добавить: ");
+                    string a = Console.ReadLine();
+                    arrayList.Add(a);
+                    Console.Write("Динамический массив с новым элементом: ");
+                    Print();
+                    break;
+                default:
+                    Console.WriteLine("Неправильный ввод");
+                    break;
+            }
+
+            void Print()
+            {
+                foreach (object i in arrayList) Console.Write($"{i} ");
+            }
+        }
+    }
+}
