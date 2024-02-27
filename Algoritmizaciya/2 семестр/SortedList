@@ -1,0 +1,61 @@
+using System;
+using System.Collections;
+
+namespace ConsoleApp20
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            SortedList sortedList = new SortedList();
+            sortedList.Add("bool", "true");
+            sortedList.Add("int", "123");
+            sortedList.Add("string", "Hello world!");
+            Console.WriteLine("1 - Add");
+            Console.WriteLine("2 - IndexOfKey");
+            Console.WriteLine("3 - IndexOfValue");
+            Console.WriteLine("4 - Вывод значения по индексу");
+            Console.WriteLine("5 - Вывод ключа по индексу");
+
+            string choice = Console.ReadLine();
+            Console.Clear();
+            Console.WriteLine("Изначальный список: ");
+            foreach (string i in sortedList.Keys) Console.WriteLine(i + ": " + sortedList[i]);
+            switch (choice)
+            {
+                case "1":
+                    Console.Write("Введите ключ нового элемента: ");
+                    string key = Console.ReadLine();
+                    Console.Write("Введите значение нового элемента: ");
+                    string value = Console.ReadLine();
+                    sortedList.Add(key, value);
+                    Console.WriteLine("Отсортированный список с новым элементом: ");
+                    foreach (string i in sortedList.Keys) Console.WriteLine(i + ": " + sortedList[i]);
+                    break;
+                case "2":
+                    Console.Write("Введите ключ элемента: ");
+                    string searchKey = Console.ReadLine();
+                    Console.WriteLine("Индекс элемента: " + sortedList.IndexOfKey(searchKey));
+                    break;
+                case "3":
+                    Console.Write("Введите значение элемента: ");
+                    string searchValue = Console.ReadLine();
+                    Console.WriteLine("Индекс элемента: " + sortedList.IndexOfValue(searchValue));
+                    break;
+                case "4":
+                    Console.Write("Введите индекс элемента: ");
+                    int searchIndex = Convert.ToInt32(Console.ReadLine());
+                    Console.WriteLine("Значение элемента: " + sortedList.GetByIndex(searchIndex));
+                    break;
+                case "5":
+                    Console.Write("Введите индекс элемента: ");
+                    int searchIndex2 = Convert.ToInt32(Console.ReadLine());
+                    Console.WriteLine("Ключ элемента: " + sortedList.GetKey(searchIndex2));
+                    break;
+                default:
+                    Console.WriteLine("Неправильный ввод");
+                    break;
+            }
+        }
+    }
+}
