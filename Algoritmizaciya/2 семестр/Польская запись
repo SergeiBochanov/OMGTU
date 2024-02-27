@@ -10,8 +10,9 @@ namespace ConsoleApp18
             Stack st = new Stack();
             string expression = Console.ReadLine();
             bool flag = true;
-            foreach (char i in expression)
+            for (int j = 0; j < expression.Length; j++)
             {
+                char i = expression[j];
                 if (!"+-*/".Contains(i)) st.Push(Convert.ToString(i));
                 else
                 {
@@ -27,7 +28,7 @@ namespace ConsoleApp18
                         Console.WriteLine("Нет элементов для проведения вычисления");
                         break;
                     }
-                    if (st.Count != 0)
+                    if (j == expression.Length - 1 && st.Count != 0)
                     {
                         flag = false;
                         Console.WriteLine("Однозначное вычисление невозможно");
