@@ -1,0 +1,62 @@
+using System;
+using System.Collections;
+
+namespace ConsoleApp18
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Stack st = new Stack();
+            string expression = Console.ReadLine();
+            bool flag = true;
+            foreach (char i in expression)
+            {
+                if (!"+-*/".Contains(i)) st.Push(Convert.ToString(i));
+                else
+                {
+                    int a, b;
+                    try
+                    {
+                        b = Convert.ToInt32(st.Pop());
+                        a = Convert.ToInt32(st.Pop());
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        flag = false;
+                        Console.WriteLine("Нет элементов для проведения вычисления");
+                        break;
+                    }
+                    if (st.Count != 0)
+                    {
+                        flag = false;
+                        Console.WriteLine("Однозначное вычисление невозможно");
+                        break;
+                    }
+                    switch (i)
+                    {
+                        case '+':
+                            st.Push(a + b);
+                            break;
+                        case '-':
+                            st.Push(a - b);
+                            break;
+                        case '*':
+                            st.Push(a * b);
+                            break;
+                        case '/':
+                            if (b != 0) st.Push(a / b);
+                            else
+                            {
+                                flag = false;
+                                Console.WriteLine("Деление на 0 невозможно");
+                            }
+                            break;
+                    }
+                    if (!flag) break;
+                }
+            }
+            if (flag) Console.WriteLine(st.Pop());
+        }
+    }
+}
