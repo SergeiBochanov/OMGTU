@@ -1,0 +1,33 @@
+graph = [[1, 2], [2, 3], [2, 6], [2, 10], [3, 4], [4, 10], [5, 6], [5, 7], [5, 10], [8, 9], [8, 11], [9, 11]]
+peaks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+visited_peaks = []
+answer = []
+
+def AddPeaks(peak, ans):
+    arr = []
+    for i in graph:
+        if i[0] == peak and i[1] not in ans:
+            arr.append(i[1])
+        elif i[1] == peak and i[0] not in ans:
+            arr.append(i[0])
+    return arr
+
+for i in peaks:
+    if i not in visited_peaks:
+        visited_peaks.append(i)
+        answer.append([i])
+        break
+while len(visited_peaks) != len(peaks):
+    checkArray = answer[-1]
+    for i in answer[-1]:
+        for j in AddPeaks(i, answer[-1]):
+            checkArray.append(j)
+            visited_peaks.append(j)
+    if checkArray == answer[-1]:
+        for i in peaks:
+            if i not in visited_peaks:
+                visited_peaks.append(i)
+                answer.append([i])
+                break
+    else: answer[-1] = checkArray
+print(answer)
