@@ -1,0 +1,44 @@
+graph = [[1, 2], [2, 3], [2, 6], [2, 10], [3, 4], [4, 10], [5, 6], [5, 7], [5, 10], [8, 9], [8, 11], [9, 11]]
+peaks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+visited_peaks = []
+answer = []
+selected_peak = 0
+while len(visited_peaks) != len(peaks):
+    flag = True
+    for i in range(len(graph)):
+        if selected_peak == 0 and graph[i][0] not in visited_peaks:
+            selected_peak = graph[i][0]
+            answer.append([selected_peak])
+            visited_peaks.append(selected_peak)
+        if graph[i][0] == selected_peak or graph[i][1] == selected_peak:
+            if graph[i][0] not in answer[-1]:
+                visited_peaks.append(graph[i][0])
+                selected_peak = graph[i][0]
+                answer[-1].append(graph[i][0])
+                flag = False
+                break
+            elif graph[i][1] not in answer[-1]:
+                visited_peaks.append(graph[i][1])
+                selected_peak = graph[i][1]
+                answer[-1].append(graph[i][1])
+                flag = False
+                break
+    if flag:
+        foundNew = False
+        for i in answer[-1]:
+            for j in range(len(graph)):
+                if (graph[j][0] == i and graph[j][1] not in answer[-1]):
+                    visited_peaks.append(graph[j][1])
+                    selected_peak = graph[j][1]
+                    answer[-1].append(graph[j][1])
+                    foundNew = True
+                    break
+                elif (graph[j][0] not in answer[-1] and graph[j][1] == i):
+                    visited_peaks.append(graph[j][0])
+                    selected_peak = graph[j][0]
+                    answer[-1].append(graph[j][0])
+                    foundNew = True
+                    break
+            if foundNew: break
+        if not foundNew: selected_peak = 0
+print(answer)
