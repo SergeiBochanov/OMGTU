@@ -1,0 +1,23 @@
+with open("input_s1_12.txt") as f:
+    n = int(f.readline())
+    x_koef = 1
+    num_koef = 0
+    for i in range(n):
+        operation = f.readline().strip()
+        sign = operation[0]
+        value = operation[1:].replace(" ", "")
+        if value == "x":
+            if sign == "+": x_koef += 1
+            else: x_koef -= 1
+            continue
+        else:
+            value = int(value)
+        if sign == "+":
+            num_koef += value
+        elif sign == "-":
+            num_koef -= value
+        elif sign == "*":
+            x_koef *= value
+            num_koef *= value
+    result = int(f.readline())
+    print(int((result - num_koef)/x_koef))
