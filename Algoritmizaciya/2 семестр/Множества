@@ -1,0 +1,49 @@
+using System;
+using System.Collections.Generic;
+
+namespace ConsoleApp22
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            void Show(string msg, SortedSet<string> set)
+            {
+                Console.Write(msg);
+                foreach (string i in set)
+                    Console.Write(i + " ");
+                Console.WriteLine();
+            }
+
+            SortedSet<string> setA = new SortedSet<string>();
+            SortedSet<string> setB = new SortedSet<string>();
+            SortedSet<string> setC = new SortedSet<string>();
+
+            Console.Write("Введите содержимое множества A через пробел: ");
+            foreach (string i in Console.ReadLine().Split()) setA.Add(i);
+            Console.Write("Введите содержимое множества B через пробел: ");
+            foreach (string i in Console.ReadLine().Split()) setB.Add(i);
+            Console.Write("Введите содержимое множества C через пробел: ");
+            foreach (string i in Console.ReadLine().Split()) setC.Add(i);
+
+            SortedSet<string> universe = new SortedSet<string>();
+            universe.UnionWith(setA);
+            universe.UnionWith(setB);
+            universe.UnionWith(setC);
+            Show("Объединение множеств: ", universe);
+
+            SortedSet<string> intersection = new SortedSet<string>(universe);
+            intersection.IntersectWith(setA);
+            intersection.IntersectWith(setB);
+            intersection.IntersectWith(setC);
+            Show("Пересечение множеств: ", intersection);
+
+            setA.SymmetricExceptWith(universe);
+            Show("Дополнение множества А: ", setA);
+            setB.SymmetricExceptWith(universe);
+            Show("Дополнение множества B: ", setB);
+            setC.SymmetricExceptWith(universe);
+            Show("Дополнение множества А: ", setC);
+        }
+    }
+}
