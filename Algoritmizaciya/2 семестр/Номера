@@ -1,0 +1,54 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace ConsoleApp22
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Queue<string> queue = new Queue<string>();
+            Hashtable hashtable = new Hashtable();
+            Dictionary<string, double> dict = new Dictionary<string, double>();
+            bool stop = false;
+            while (!stop)
+            {
+                Console.WriteLine("Введите номер телефона, дату, время начала разговора и количество минут через пробел:");
+                string input = Console.ReadLine();
+                queue.Enqueue(input);
+                while (true)
+                {
+                    Console.Write("Добавить ещё номер? (y/n) ");
+                    string choice = Console.ReadLine();
+                    switch (choice)
+                    {
+                        case "y":
+                            break;
+                        case "n":
+                            stop = true;
+                            break;
+                        default:
+                            Console.WriteLine("Неправильный ввод, попробуйте ещё раз");
+                            continue;
+                    }
+                    break;
+                }
+            }
+            while (queue.Count > 0)
+            {
+                string[] input = queue.Dequeue().Split();
+                if (!dict.ContainsKey(input[0]))
+                    dict.Add(input[0], 0);
+                dict[input[0]] += Convert.ToDouble(input[3]);
+                if (!hashtable.ContainsKey(input[0]))
+                    hashtable.Add(input[0], 0);
+                hashtable[input[0]] = Convert.ToDouble(hashtable[input[0]]) + Convert.ToDouble(input[3]);
+            }
+            foreach (string str in dict.Keys)
+                Console.WriteLine($"{str}: {dict[str]} минут");
+            foreach (string str in hashtable.Keys)
+                Console.WriteLine($"{str}: {hashtable[str]} минут");
+        }
+    }
+}
