@@ -1,0 +1,125 @@
+using System;
+using System.Collections.Generic;
+
+namespace ConsoleApp22
+{
+    class Calls
+    {
+        public string incomingNumber { get; set; }
+        public string outgoingNumber { get; set; }
+        public int callDuration { get; set; }
+
+        public Calls(string incomingNumber, string outgoingNumber, int callDuration)
+        {
+            this.incomingNumber = incomingNumber;
+            this.outgoingNumber = outgoingNumber;
+            this.callDuration = callDuration;
+        }
+        public void Print(Calls call)
+        {
+            Console.WriteLine(call.incomingNumber + call.outgoingNumber + call.callDuration);
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            List<string> totalNumberList = new List<string>();
+            Dictionary<string, List<Calls>> dict = new Dictionary<string, List<Calls>>();
+            bool stop = false;
+            while (!stop)
+            {
+                Console.WriteLine("Введите дату, номер звонящего, номер, на который звонили и количество минут через пробел: ");
+                string[] input = Console.ReadLine().Split();
+                Calls call = new Calls(input[1], input[2], Convert.ToInt32(input[3]));
+                if (!totalNumberList.Contains(call.incomingNumber))
+                    totalNumberList.Add(call.incomingNumber);
+                if (!dict.ContainsKey(input[0])) 
+                    dict.Add(input[0], new List<Calls>());
+                dict[input[0]].Add(call);
+
+                while (true)
+                {
+                    Console.Write("Добавить данные о другом звонке? (y/n) ");
+                    string choice = Console.ReadLine();
+                    switch (choice)
+                    {
+                        case "y":
+                            break;
+                        case "n":
+                            stop = true;
+                            break;
+                        default:
+                            Console.WriteLine("Неправильный ввод, попробуйте ещё раз");
+                            continue;
+                    }
+                    break;
+                }
+            }
+            Console.Write("Введите номер абонента: ");
+            string searchNumber = Console.ReadLine();
+            foreach (string i in dict.Keys)
+            {
+                Dictionary<string, int> numbers = new Dictionary<string, int>();
+                foreach (Calls call in dict[i])
+                {
+                    if (call.incomingNumber == searchNumber)
+                    {
+                        if (!numbers.ContainsKey(call.outgoingNumber))
+                            numbers.Add(call.outgoingNumber, 0);
+                        numbers[call.outgoingNumber] += 1;
+                    }
+                }
+                if (numbers.Count != 0)
+                {
+                    Console.WriteLine(i);
+                    int maxCalls = 0;
+                    string maxCalledNumber = "";
+                    foreach (string j in numbers.Keys)
+                    {
+                        if (numbers[j] > maxCalls)
+                        {
+                            maxCalls = numbers[j];
+                            maxCalledNumber = j;
+                        }
+                    }
+                    Console.WriteLine($"\tАбонент звонил {maxCalls} раз(а) на номер {maxCalledNumber}");
+                }
+            }
+
+            Console.WriteLine("-----------------------------------------------------------------------------------------------------------------------");
+
+            foreach (string i in dict.Keys)
+            {
+                Console.WriteLine(i);
+                foreach (string number in totalNumberList)
+                {
+                    Dictionary<string, int> numbers = new Dictionary<string, int>();
+                    foreach (Calls call in dict[i])
+                    {
+                        if (call.incomingNumber == number)
+                        {
+                            if (!numbers.ContainsKey(call.outgoingNumber))
+                                numbers.Add(call.outgoingNumber, 0);
+                            numbers[call.outgoingNumber] += call.callDuration;
+                        }
+                    }
+                    if (numbers.Count != 0)
+                    {
+                        int maxMinutes = 0;
+                        string maxCalledNumber = "";
+                        foreach (string j in numbers.Keys)
+                        {
+                            if (numbers[j] > maxMinutes)
+                            {
+                                maxMinutes = numbers[j];
+                                maxCalledNumber = j;
+                            }
+                        }
+                        Console.WriteLine($"\tАбонент {number} звонил на номер {maxCalledNumber} в течение {maxMinutes} минут(ы)");
+                    }
+                }
+            }
+        }
+    }
+}
