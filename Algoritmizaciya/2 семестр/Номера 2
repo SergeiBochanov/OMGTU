@@ -15,10 +15,6 @@ namespace ConsoleApp22
             this.outgoingNumber = outgoingNumber;
             this.callDuration = callDuration;
         }
-        public void Print(Calls call)
-        {
-            Console.WriteLine(call.incomingNumber + call.outgoingNumber + call.callDuration);
-        }
     }
     class Program
     {
