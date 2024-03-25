@@ -1,0 +1,23 @@
+with open("input_s1_09.txt") as f:
+    phrase = f.readline().split()
+    words_number = len(phrase)
+    converted_words = [""] * words_number
+    counter = words_number - (words_number % 2) - 1
+    switch = False
+    for i in phrase:
+        word = i
+        k = len(i) - 1
+        new_word = [""] * len(i)
+        if (len(i) % 2) != 0: word = word[::-1]
+        for j in range(len(i)):
+            new_word[k] = word[0]
+            word = word.replace(word[0], "", 1)
+            word = word[::-1]
+            k -= 1
+        converted_words[counter] = "".join(new_word)
+        if not switch: counter -= 2
+        else: counter += 2
+        if counter < 0:
+            counter = 0
+            switch = True
+    print(" ".join(converted_words))
