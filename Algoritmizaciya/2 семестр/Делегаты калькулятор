@@ -1,0 +1,179 @@
+using System;
+using System.Collections.Generic;
+
+namespace ConsoleApp14
+{
+    class Program
+    {
+       public delegate double Count2(double a, double b);
+       public delegate double Count1(double a);
+        interface Operations
+        {
+            double Addition(double a, double b);
+            double Subtraction(double a, double b);
+            double Multiplication(double a, double b);
+            double Division(double a, double b);
+            double SquareRoot(double a);
+            double Sin(double a);
+            double Cos(double a);
+        }
+        class Calculator : Operations
+        {
+            public double Addition(double a, double b)
+            {
+                return a + b;
+            }
+            public double Subtraction(double a, double b)
+            {
+                return a - b;
+            }
+            public double Multiplication(double a, double b)
+            {
+                return a * b;
+            }
+            public double Division(double a, double b)
+            {
+                if (Math.Abs(b) < 1E-7)
+                {
+                    Console.WriteLine("Делить на 0 нельзя");
+                    return Double.NaN;
+                }     
+                return a / b;
+            }
+            public double SquareRoot(double a)
+            {
+                if (a < 0)
+                {
+                    Console.WriteLine("Невозможно извлечь корень");
+                    return Double.NaN;
+                }
+                return Math.Sqrt(a);
+            }
+            public double Sin(double a)
+            {
+                return Math.Sin(a);
+            }
+            public double Cos(double a)
+            {
+                return Math.Cos(a);
+            }
+        }
+        static void Main(string[] args)
+        {
+            Count2 count2;
+            Count1 count1;
+            Calculator calculator = new Calculator();
+            while (true)
+            {
+                Console.WriteLine("Выберите тип операции:");
+                Console.WriteLine("1 - Сложение");
+                Console.WriteLine("2 - Вычитание");
+                Console.WriteLine("3 - Умножение");
+                Console.WriteLine("4 - Деление");
+                Console.WriteLine("5 - Извлечение корня");
+                Console.WriteLine("6 - Нахождение синуса");
+                Console.WriteLine("7 - Нахождение косинуса");
+                Console.WriteLine("8 - Выход");
+                string choice = Console.ReadLine().Trim();
+                Console.Clear();
+                List<string> a = new List<string>();
+                string str;
+                bool stop = false;
+                switch (choice)
+                {
+                    case "1":
+                        Console.WriteLine("Введите первое и второе слагаемые через пробел:");
+                        foreach (string i in Console.ReadLine().Split()) a.Add(i);
+                        while (a.Count != 2 | !Double.TryParse(a[0], out double k) | !Double.TryParse(a[1], out double p))
+                        {
+                            a.Clear();
+                            Console.WriteLine("Неправильные значения аргументов, попробуйте ещё раз:");
+                            foreach (string i in Console.ReadLine().Split()) a.Add(i);
+                        }
+                        count2 = calculator.Addition;
+                        Console.WriteLine($"Результат сложения: {count2(Convert.ToDouble(a[0]), Convert.ToDouble(a[1]))}");
+                        break;
+                    case "2":
+                        Console.WriteLine("Введите уменьшаемое и вычитаемое через пробел:");
+                        foreach (string i in Console.ReadLine().Split()) a.Add(i);
+                        while (a.Count != 2 | !Double.TryParse(a[0], out double k) | !Double.TryParse(a[1], out double p))
+                        {
+                            a.Clear();
+                            Console.WriteLine("Неправильные значения аргументов, попробуйте ещё раз:");
+                            foreach (string i in Console.ReadLine().Split()) a.Add(i);
+                        }
+                        count2 = calculator.Subtraction;
+                        Console.WriteLine($"Результат вычитания: {count2(Convert.ToDouble(a[0]), Convert.ToDouble(a[1]))}");
+                        break;
+                    case "3":
+                        Console.WriteLine("Введите первый и второй множители через пробел:");
+                        foreach (string i in Console.ReadLine().Split()) a.Add(i);
+                        while (a.Count != 2 | !Double.TryParse(a[0], out double k) | !Double.TryParse(a[1], out double p))
+                        {
+                            a.Clear();
+                            Console.WriteLine("Неправильные значения аргументов, попробуйте ещё раз:");
+                            foreach (string i in Console.ReadLine().Split()) a.Add(i);
+                        }
+                        count2 = calculator.Multiplication;
+                        Console.WriteLine($"Результат умножения: {count2(Convert.ToDouble(a[0]), Convert.ToDouble(a[1]))}");
+                        break;
+                    case "4":
+                        Console.WriteLine("Введите делимое и делитель через пробел:");
+                        foreach (string i in Console.ReadLine().Split()) a.Add(i);
+                        while (a.Count != 2 | !Double.TryParse(a[0], out double k) | !Double.TryParse(a[1], out double p))
+                        {
+                            a.Clear();
+                            Console.WriteLine("Неправильные значения аргументов, попробуйте ещё раз:");
+                            foreach (string i in Console.ReadLine().Split()) a.Add(i);
+                        }
+                        count2 = calculator.Division;
+                        Console.WriteLine($"Результат деления: {count2(Convert.ToDouble(a[0]), Convert.ToDouble(a[1]))}");
+                        break;
+                    case "5":
+                        Console.WriteLine("Введите число:");
+                        str = Console.ReadLine();
+                        while (!Double.TryParse(str, out double k))
+                        {
+                            Console.WriteLine("Неправильное значение, попробуйте ещё раз:");
+                            str = Console.ReadLine();
+                        }
+                        count1 = calculator.SquareRoot;
+                        Console.WriteLine($"Результат извлечения корня: {count1(Convert.ToDouble(str))}");
+                        break;
+                    case "6":
+                        Console.WriteLine("Введите число:");
+                        str = Console.ReadLine();
+                        while (!Double.TryParse(str, out double k))
+                        {
+                            Console.WriteLine("Неправильное значение, попробуйте ещё раз:");
+                            str = Console.ReadLine();
+                        }
+                        count1 = calculator.Sin;
+                        Console.WriteLine($"Синус числа: {count1(Convert.ToDouble(str))}");
+                        break;
+                    case "7":
+                        Console.WriteLine("Введите число:");
+                        str = Console.ReadLine();
+                        while (!Double.TryParse(str, out double k))
+                        {
+                            Console.WriteLine("Неправильное значение, попробуйте ещё раз:");
+                            str = Console.ReadLine();
+                        }
+                        count1 = calculator.Cos;
+                        Console.WriteLine($"Косинус числа: {count1(Convert.ToDouble(str))}");
+                        break;
+                    case "8":
+                        stop = true;
+                        break;
+                    default:
+                        Console.WriteLine("Некорректный ввод, выберите операцию ещё раз");
+                        break;
+                }
+                if (stop) break;
+                Console.WriteLine("Для продолжения нажмите любую клавишу");
+                Console.ReadKey();
+                Console.Clear();
+            }
+        }
+    }
+}
