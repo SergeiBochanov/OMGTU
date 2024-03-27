@@ -1,0 +1,84 @@
+using System;
+using System.Collections.Generic;
+
+namespace ConsoleApp14
+{
+    class Program
+    {
+        class Car
+        {
+            public bool isWashed { get; set; }
+            public Car(bool isWashed)
+            {
+                this.isWashed = isWashed;
+            }
+        }
+        class Garage
+        {
+            public List<Car> cars = new List<Car>();
+            
+            public void AddCar(Car car)
+            {
+                cars.Add(car);
+            }
+        }
+        delegate void WashCar(Car car);
+        class Washing
+        {
+            public static void Wash(Car car)
+            {
+                if (car.isWashed == false)
+                    car.isWashed = true;
+            }
+        }
+        static void Main(string[] args)
+        {
+            Garage garage = new Garage();
+            WashCar washCar = new WashCar(Washing.Wash);
+            Console.WriteLine("Добавление машин в гараж:");
+            int counter = 1;
+            while (true)
+            {
+                Console.WriteLine($"Помыта ли {counter}-я машина? (y/n)");
+                string choice = Console.ReadLine();
+                while (true)
+                {
+                    if (choice == "y")
+                    {
+                        Car car = new Car(true);
+                        garage.AddCar(car);
+                        break;
+                    }
+                    else if (choice == "n")
+                    {
+                        Car car = new Car(false);
+                        garage.AddCar(car);
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Неправильный ввод, попробуйте ещё раз");
+                        choice = Console.ReadLine();
+                    }
+                }
+                Console.WriteLine("Добавить ещё машину? (y/n)");
+                choice = Console.ReadLine();
+                while (choice != "n" && choice != "y")
+                {
+                    Console.WriteLine("Неправильный ввод, попробуйте ещё раз");
+                    choice = Console.ReadLine();                
+                }
+                if (choice == "n") break;
+                counter += 1;
+            }
+            Console.WriteLine("Моем все машины");
+            counter = 1;
+            foreach (Car car in garage.cars)
+            {
+                washCar(car);
+                Console.WriteLine($"Помыта ли {counter}-я машина: {car.isWashed}");
+                counter += 1;
+            }
+        }
+    }
+}
