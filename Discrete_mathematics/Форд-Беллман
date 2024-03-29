@@ -1,0 +1,40 @@
+import math
+
+peaks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+start_peak = 2
+graph = [[1, 2, 7], [1, 5, 9], [1, 6, 2], [2, 3, 5], [2, 4, 4], [2, 5, 8], [2, 6, 2], [3, 4, 2], [3, 5, 9], [4, 5, 3],
+         [4, 7, 8], [4, 8, 3], [5, 6, 3], [5, 7, 5], [5, 8, 1], [5, 9, 7], [6, 8, 6], [6, 9, 1], [7, 8, 6], [7, 10, 4],
+         [7, 11, 4], [8, 9, 2], [8, 10, 7], [8, 11, 8], [8, 12, 5], [9, 11, 6], [9, 12, 1], [10, 11, 10], [11, 12, 3]]
+reverse_graph = []
+for i in graph:
+    reverse_graph.append([i[1], i[0], i[2]])
+graph += reverse_graph
+graph.sort(key=lambda x:x[1])
+
+dict = {}
+for i in peaks:
+    if i != start_peak:
+        dict[i] = [math.inf, 0]
+    else: dict[i] = [0, 0]
+
+change = False
+for i in range(len(peaks)):
+    change = False
+    for j in graph:
+        if dict[j[1]][0] > dict[j[0]][0] + j[2] and dict[j[0]][1] != j[1]:
+            dict[j[1]] = [dict[j[0]][0] + j[2], j[0]]
+            change = True
+    if not change: break
+if change or dict[start_peak][0] != 0:
+    print("В графе есть контур отрицательного веса")
+else:
+    for i in peaks:
+        path = str(i)
+        previous_peak = dict[i][1]
+        if previous_peak != 0:
+            while previous_peak != start_peak:
+                path = f"{previous_peak}-" + path
+                previous_peak = dict[previous_peak][1]
+            path = f"{start_peak}-" + path
+        else: path = "Стартовая вершина"
+        print(f"{start_peak} -> {i}: Длина пути: {dict[i][0]}\t Путь: {path}")
