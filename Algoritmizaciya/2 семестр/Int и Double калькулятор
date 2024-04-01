@@ -1,0 +1,112 @@
+using System;
+
+namespace ConsoleApp14
+{
+    class Program
+    {
+        class Calc<T>
+        {
+            public static void Addition(T ob1, T ob2)
+            {
+                dynamic a = ob1;
+                dynamic b = ob2;
+                Console.WriteLine($"Сложение: {a+b}");
+            }
+            public static void Substraction(T ob1, T ob2)
+            {
+                dynamic a = ob1;
+                dynamic b = ob2;
+                Console.WriteLine($"Вычитание: {a - b}");
+            }
+            public static void Multiplication(T ob1, T ob2)
+            {
+                dynamic a = ob1;
+                dynamic b = ob2;
+                Console.WriteLine($"Умножение: {a * b}");
+            }
+            public static void Division(T ob1, T ob2)
+            {
+                dynamic a = ob1;
+                dynamic b = ob2;
+                if (b < 1E-7)
+                    Console.WriteLine("Делить на 0 нельзя");
+                else 
+                    Console.WriteLine($"Деление: {a / b}");
+            }
+        }
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Выберите тип данных для работы:");
+            Console.WriteLine("1 - Целые (int)");
+            Console.WriteLine("2 - Вещественные (double)");
+            string choice = Console.ReadLine();
+            while (choice != "1" && choice != "2")
+            {
+                Console.WriteLine("Неправильный ввод, попробуйте ещё раз");
+                choice = Console.ReadLine();
+            }
+            if (choice == "1")
+            {
+                int a = 0;
+                int b = 0;
+                Console.Write("Введите первое число: ");
+                while (true)
+                {
+                    if (!Int32.TryParse(Console.ReadLine(), out int a1))
+                        Console.WriteLine("Неправильный ввод, попробуйте ещё раз: ");
+                    else
+                    {
+                        a = a1;
+                        break;
+                    }
+                }
+                Console.Write("Введите второе число: ");
+                while (true)
+                {
+                    if (!Int32.TryParse(Console.ReadLine(), out int b1))
+                        Console.WriteLine("Неправильный ввод, попробуйте ещё раз: ");
+                    else
+                    {
+                        b = b1;
+                        break;
+                    }
+                }
+                Calc<int>.Addition(a, b);
+                Calc<int>.Substraction(a, b);
+                Calc<int>.Multiplication(a, b);
+                Calc<int>.Division(a, b);
+            }
+            else
+            {
+                double a = 0;
+                double b = 0;
+                Console.Write("Введите первое число: ");
+                while (true)
+                {
+                    if (!Double.TryParse(Console.ReadLine(), out double a1))
+                        Console.WriteLine("Неправильный ввод, попробуйте ещё раз: ");
+                    else
+                    {
+                        a = a1;
+                        break;
+                    }
+                }
+                Console.Write("Введите второе число: ");
+                while (true)
+                {
+                    if (!Double.TryParse(Console.ReadLine(), out double b1))
+                        Console.WriteLine("Неправильный ввод, попробуйте ещё раз: ");
+                    else
+                    {
+                        b = b1;
+                        break;
+                    }
+                }
+                Calc<double>.Addition(a, b);
+                Calc<double>.Substraction(a, b);
+                Calc<double>.Multiplication(a, b);
+                Calc<double>.Division(a, b);
+            }
+        }
+    }
+}
