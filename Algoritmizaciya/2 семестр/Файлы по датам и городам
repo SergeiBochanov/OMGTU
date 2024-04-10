@@ -1,0 +1,76 @@
+using System;
+using System.IO;
+using System.Collections.Generic;
+
+namespace ConsoleApp14
+{
+    class Program
+    {
+        struct MyStruct
+        {
+            public int birthYear;
+            public string birthTown;
+            public string birthCountry;
+
+            public MyStruct(int birthYear, string birthTown, string birthCountry)
+            {
+                this.birthYear = birthYear;
+                this.birthTown = birthTown;
+                this.birthCountry = birthCountry;
+            }
+        }
+        static void Main(string[] args)
+        {
+            FileInfo f = new FileInfo(@"C:\Users\admin\source\repos\ConsoleApp14\ConsoleApp14\input.txt");
+            StreamReader sr = f.OpenText();
+            string s = sr.ReadLine();
+            List<MyStruct> objects = new List<MyStruct>();
+
+            while (s != null)
+            {
+                string[] split = s.Split();
+                MyStruct myStruct = new MyStruct(Convert.ToInt32(split[0]), split[1], split[2]);
+                objects.Add(myStruct);
+                s = sr.ReadLine();
+            }
+            sr.Close();
+
+
+            objects.Sort((a, b) => a.birthYear.CompareTo(b.birthYear));
+
+            f = new FileInfo(@"C:\Users\admin\source\repos\ConsoleApp14\ConsoleApp14\output1.txt");
+            StreamWriter sw = f.CreateText();
+            foreach (MyStruct ob in objects)
+            {
+                sw.WriteLine($"{ob.birthYear} {ob.birthTown}, {ob.birthCountry}");
+            }
+            sw.Close();
+
+
+            objects.Sort((a, b) => a.birthTown.CompareTo(b.birthTown));
+
+            f = new FileInfo(@"C:\Users\admin\source\repos\ConsoleApp14\ConsoleApp14\output2.txt");
+            sw = f.CreateText();
+            foreach (MyStruct ob in objects)
+            {
+                sw.WriteLine($"{ob.birthYear} {ob.birthTown}, {ob.birthCountry}");
+            }
+            sw.Close();
+
+
+            Console.Write("Введите страну: ");
+            string country = Console.ReadLine();
+
+            f = new FileInfo(@"C:\Users\admin\source\repos\ConsoleApp14\ConsoleApp14\output3.txt");
+            sw = f.CreateText();
+            foreach (MyStruct ob in objects)
+            {
+                if (ob.birthCountry == country)
+                    sw.WriteLine($"{ob.birthYear} {ob.birthTown}, {ob.birthCountry}");
+            }
+            sw.Close();
+            Console.WriteLine("Файлы созданы.");
+
+        }
+    }
+}
