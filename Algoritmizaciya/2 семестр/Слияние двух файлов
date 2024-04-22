@@ -1,0 +1,48 @@
+using System;
+using System.IO;
+
+namespace ConsoleApp15
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            FileInfo f1 = new FileInfo(@"C:\Users\admin\source\repos\ConsoleApp15\ConsoleApp15\input1.txt");
+            StreamReader sr1 = f1.OpenText();
+            FileInfo f2 = new FileInfo(@"C:\Users\admin\source\repos\ConsoleApp15\ConsoleApp15\input2.txt");
+            StreamReader sr2 = f2.OpenText();
+            FileInfo answer = new FileInfo(@"C:\Users\admin\source\repos\ConsoleApp15\ConsoleApp15\output.txt");
+            StreamWriter sw = answer.CreateText();
+
+            string a = sr1.ReadLine();
+            string b = sr2.ReadLine();
+            while (a != null || b != null)
+            {
+                if (a == null)
+                {
+                    sw.WriteLine(b);
+                    b = sr2.ReadLine();
+                }
+                else if (b == null)
+                {
+                    sw.WriteLine(a);
+                    a = sr1.ReadLine();
+                }
+                else
+                {
+                    if (Convert.ToInt32(a) >= Convert.ToInt32(b))
+                    {
+                        sw.WriteLine(b);
+                        b = sr2.ReadLine();
+                    }
+                    else
+                    {
+                        sw.WriteLine(a);
+                        a = sr1.ReadLine();
+                    }
+                }
+            }
+            sw.Close();
+        }
+    }
+}
