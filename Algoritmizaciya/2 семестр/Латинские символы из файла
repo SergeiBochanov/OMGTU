@@ -1,0 +1,50 @@
+using System;
+using System.IO;
+using System.Collections.Generic;
+
+namespace ConsoleApp23
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            StreamReader sr = new StreamReader(@"C:\Users\admin\source\repos\ConsoleApp23\ConsoleApp23\input.txt");
+            string f = "";
+            string p = sr.ReadLine();
+            while (p != null)
+            {
+                f += p;
+                p = sr.ReadLine();
+            }
+            f = f.ToLower();
+
+            int len = f.Length;
+            int maxd = 0;
+            char answer1 = ' ';
+            List<char> answer2 = new List<char>();
+            List<char> answer3 = new List<char>();
+
+            foreach (char i in "abcdefghijklmnopqrstuvwxyz")
+            {
+                f = f.Replace($"{i}", "");
+                int d = len - f.Length;
+                if (d > maxd)
+                {
+                    maxd = d;
+                    answer1 = i;
+                }
+                if (d == 1) answer2.Add(i);
+                if (d > 0) answer3.Add(i);
+                len = f.Length;
+            }
+
+            answer2.Sort();
+            answer3.Sort();
+            Console.WriteLine($"Наиболее часто встречается символ: {answer1}");
+            Console.Write("Символы, встречающиеся 1 раз: ");
+            foreach (char i in answer2) Console.Write(i + " ");
+            Console.Write("\nСимволы, из которых состоит файл: ");
+            foreach (char i in answer3) Console.Write(i + " ");
+        }
+    }
+}
