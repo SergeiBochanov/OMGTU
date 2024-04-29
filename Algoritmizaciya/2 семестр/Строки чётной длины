@@ -1,0 +1,19 @@
+using System;
+using System.Linq;
+
+namespace ConsoleApp14
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Введите строки через пробел:");
+            string[] strings = Console.ReadLine().Split();
+            var answer = strings.Where(x => x.Length%2 == 0);
+            Console.WriteLine(String.Join(", ", answer));
+            var str = Enumerable.Range(0, strings.Length).Where(i => i % 2 != 1).Select(i => strings[i]);
+            answer = str.Where(x => x.Length % 2 == 0);
+            Console.WriteLine(String.Join(", ", answer));
+        }
+    }
+}
