@@ -1,0 +1,50 @@
+using System;
+using System.Linq;
+
+namespace ConsoleApp14
+{
+    class Program
+    {
+        class BankAccount
+        {
+            public int accNumber { get; set; }
+            public string FIO { get; set; }
+            public int income { get; set; }
+            public int outcome { get; set; }
+            public double tax { get; set; }
+
+            public BankAccount(int accNumber, string FIO, int income, int outcome)
+            {
+                this.accNumber = accNumber;
+                this.FIO = FIO;
+                this.income = income;
+                this.outcome = outcome;
+                this.tax = income * 0.05;
+            }
+        }
+        static void Main(string[] args)
+        {
+            BankAccount[] bankAccounts =
+            {
+                new BankAccount(0001, "Иван Петров", 10000, 8000),
+                new BankAccount(0002, "Пётр Сидоров", 7500, 7000),
+                new BankAccount(0003, "Роман Романов", 1400, 2000),
+                new BankAccount(0004, "Александр Пушкин", 14000, 10000),
+                new BankAccount(0005, "Иван Куцевич", 14000, 13999),
+            };
+            var negativeBalance = bankAccounts.Where(x => (x.income - x.outcome - x.tax) < 0).Select(x => x.FIO);
+            var positiveBalanceNumber = bankAccounts.Where(x => (x.income - x.outcome - x.tax) > 0).Count();
+            var maxIncome = bankAccounts.Where(x => x.income == bankAccounts.Max(p => p.income)).Select(x => x.FIO);
+            var totalTaxSum = bankAccounts.Select(x => x.tax).Sum();
+
+            Console.Write("Клиенты с отрицательным балансом: ");
+            Console.WriteLine(String.Join(", ", negativeBalance));
+            Console.Write("Число клиентов с положительным балансом: ");
+            Console.WriteLine(positiveBalanceNumber);
+            Console.Write("Клиенты с максимальным доходом: ");
+            Console.WriteLine(String.Join(", ", maxIncome));
+            Console.Write("Общая сумма налогов: ");
+            Console.WriteLine(totalTaxSum);
+        }
+    }
+}
