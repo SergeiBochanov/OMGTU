@@ -1,0 +1,19 @@
+using System;
+using System.Linq;
+
+namespace ConsoleApp14
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int[] nums = { 1, 2, 3, 40, 15, 76, 743, 71, 900 };
+            var a = nums.Where(x => (x % 10) % 3 == 0);
+            Console.Write("Элементы с последней цифрой кратной 3: ");
+            Console.WriteLine(String.Join(", ", a));
+            var b = nums.Where(x => x.ToString().Select(p => Convert.ToInt32(p)).Sum() % 2 == 0);
+            Console.Write("Элементы с чётной суммой цифр: ");
+            Console.WriteLine(String.Join(", ", b));
+        }
+    }
+}
