@@ -1,0 +1,81 @@
+using System;
+using System.Linq;
+using System.Collections.Generic;
+
+namespace ConsoleApp14
+{
+    class Program
+    {
+        class Storage
+        {
+            public string article { get; set; }
+            public string name { get; set; }
+            public string category { get; set; }
+            public int count { get; set; }
+            public int price { get; set; }
+            public int storageNumber { get; set; }
+            public Storage(string article, string name, string category, int count, int price, int storageNumber)
+            {
+                this.article = article;
+                this.name = name;
+                this.category = category;
+                this.count = count;
+                this.price = price;
+                this.storageNumber = storageNumber;
+            }
+        }
+        static void Main(string[] args)
+        {
+            Storage[] products = {
+                new Storage("0001", "Молоко",  "Молочные изделия", 95, 60, 1),
+                new Storage("0001", "Молоко",  "Молочные изделия", 180, 55, 2),
+                new Storage("0001", "Молоко",  "Молочные изделия", 60, 90, 3),
+                new Storage("0002", "Сыр",  "Молочные изделия", 70, 120, 1),
+                new Storage("0002", "Сыр",  "Молочные изделия", 200, 110, 2),
+                new Storage("0002", "Сыр",  "Молочные изделия", 140, 130, 3),
+                new Storage("0003", "Сметана",  "Молочные изделия", 50, 100, 1),
+                new Storage("0003", "Сметана",  "Молочные изделия", 75, 100, 2),
+                new Storage("0003", "Сметана",  "Молочные изделия", 100, 100, 3),
+                new Storage("0004", "Печенье",  "Кондитерские изделия", 60, 80, 1),
+                new Storage("0004", "Печенье",  "Кондитерские изделия", 45, 70, 3),
+                new Storage("0005", "Макароны",  "Бакалея", 150, 100, 2)
+            };
+            Console.WriteLine("1) Объём товара в денежном эквиваленте по каждому складу");
+            var storagePrices = products.GroupBy(x => x.storageNumber).Select(x => new { storage = x.Key, value = x.Select(p => new {name = p.name, totalCost = p.count*p.price }), allProducts = x.Sum(p => p.count * p.price) });
+            foreach (var i in storagePrices)
+            {
+                Console.WriteLine($"{i.storage}-й склад");
+                foreach (var j in i.value)
+                {
+                    Console.WriteLine($"\t{j.name}: {j.totalCost}");
+                }
+                Console.WriteLine($"\tВсего: {i.allProducts}");
+            }
+
+            Console.WriteLine("\n2) Максимальная цена по каждой категории");
+            var maxCategoryPrice = products.GroupBy(x => x.category).Select(x => new { key = x.Key, value = x.Max(p => p.price) });
+            foreach (var i in maxCategoryPrice)
+                Console.WriteLine(i.key + ": " +i.value);
+
+            Console.WriteLine("\n3) Средняя цена товаров");
+            var oneStorage = products.GroupBy(x => x.storageNumber).Select(x => new { storage = x.Key, value = x.Average(p => p.price) });
+            var allStorages = products.Average(p => p.price);
+            foreach (var i in oneStorage)
+                Console.WriteLine($"\tНа {i.storage}-ом складе: {i.value}");
+            Console.WriteLine($"\tНа всех складах: {allStorages}");
+
+            Console.WriteLine("\n4) Самый дешёвый товар");
+            var cheapestProduct = products.Where(x => x.price == products.Min(p => p.price));
+            foreach (var i in cheapestProduct)
+                Console.WriteLine($"\t{i.name}: {i.price}");
+
+            Console.WriteLine("\n5) Данные по складу с наименьшей суммарной стоимостью товаров");
+            var sumCosts = products.GroupBy(x => x.storageNumber).Select(x => new { key = x.Key, value = x.Sum(p => p.price * p.count) });
+            var minStorageCost = products.GroupBy(x => x.storageNumber).Where(x => x.Sum(p => p.price * p.count) == sumCosts.Min(p => p.value)).First();
+            foreach (var i in minStorageCost)
+            {
+                Console.WriteLine($"{i.article}, {i.name}, {i.category}, {i.count}, {i.price}, {i.storageNumber}");
+            }
+        }
+    }
+}
