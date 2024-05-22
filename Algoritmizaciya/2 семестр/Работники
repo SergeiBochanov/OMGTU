@@ -1,0 +1,55 @@
+using System;
+using System.Linq;
+using System.Collections.Generic;
+
+namespace ConsoleApp14
+{
+    class Program
+    {
+        class Worker
+        {
+            public int id { get; set; }
+            public string FIO { get; set; }
+            public string position { get; set; }
+            public int salary { get; set; }
+            public string productCategory { get; set; }
+            public int productsMade { get; set; }
+            public int productPrice { get; set; }
+
+            public Worker(int id, string FIO, string position, int salary, string productCategory, int productsMade, int productPrice)
+            {
+                this.id = id;
+                this.FIO = FIO;
+                this.position = position;
+                this.salary = salary;
+                this.productCategory = productCategory;
+                this.productsMade = productsMade;
+                this.productPrice = productPrice;
+            }
+        }
+        static void Main(string[] args)
+        {
+            List<Worker> workers = new List<Worker> {
+                new Worker(1, "Иван", "Рабочий", 15000, "Дверь", 20, 1500),
+                new Worker(2, "Пётр", "Рабочий", 15000, "Окно", 30, 1000),
+                new Worker(3, "Василий", "Рабочий", 15000, "Лопата", 100, 500),
+                new Worker(4, "Александр", "Начальник", 30000, "Дверь", 10, 1500),
+                new Worker(5, "Семён", "Начальник", 40000, "Окно", 20, 1000),
+                new Worker(6, "Геннадий", "Директор", 100000, "Лопата", 1, 500)
+            };
+            var answer1 = workers.Where(x => x.salary < x.productsMade * x.productPrice).Count();
+            Console.WriteLine($"1. {answer1}");
+            var answer2 = workers.GroupBy(x => x.productCategory).Select(x => new { name = x.Key, count = x.Sum(i => i.productsMade), money = x.Sum(i => i.productPrice * i.productsMade) });
+            Console.Write("2. ");
+            foreach (var i in answer2)
+            {
+                Console.WriteLine(i.name);
+                Console.WriteLine($"{i.count} штук, {i.money}$");
+            }
+            var answer3 = workers.Sum(x => x.productsMade * x.productPrice);
+            Console.WriteLine($"3. {answer3}$");
+            var answer4 = workers.Where(x => x.salary > 0.5 * x.productsMade * x.productPrice).Count();
+            Console.WriteLine($"4. {answer4}");
+        }
+    }
+}
