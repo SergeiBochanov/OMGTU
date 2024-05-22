@@ -1,0 +1,95 @@
+using System;
+
+namespace ConsoleApp14
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Array arr = Array.CreateInstance(typeof(int), 10);
+            for (int i = 0; i < 10; i++)
+            {
+                arr.SetValue(i+1, i);
+            }
+            bool end = false;
+            while (!end)
+            {
+                Console.WriteLine("1 - Length");
+                Console.WriteLine("2 - BinSearch");
+                Console.WriteLine("3 - Copy");
+                Console.WriteLine("4 - Find");
+                Console.WriteLine("5 - FindLast");
+                Console.WriteLine("6 - IndexOf");
+                Console.WriteLine("7 - Reverse");
+                Console.WriteLine("8 - Resize");
+                Console.WriteLine("9 - Sort");
+                Console.WriteLine("10 - Выход");
+                string choice = Console.ReadLine();
+                Console.Clear();
+                Console.Write("Исходный массив: ");
+                foreach (int i in arr)
+                    Console.Write($"{i} ");
+                Console.WriteLine();
+                switch (choice)
+                {
+                    case "1":
+                        Console.WriteLine($"Количество элементов: {arr.Length}");
+                        break;
+                    case "2":
+                        Console.WriteLine($"Индекс элемента 7: {Array.BinarySearch(arr, 7)}");
+                        break;
+                    case "3":
+                        int[] copy = new int[5];
+                        Array.Copy(arr, 5, copy, 0, 5);
+                        Console.Write("Копия последних пяти элементов массива: ");
+                        foreach (int i in copy)
+                            Console.Write($"{i} ");
+                        Console.WriteLine();
+                        break;
+                    case "4":
+                        int first = Array.Find((int[])arr, x => x % 2 == 0);
+                        Console.WriteLine($"Первый чётный элемент: {first}");
+                        break;
+                    case "5":
+                        int last = Array.FindLast((int[])arr, x => x % 2 == 0);
+                        Console.WriteLine($"Последний чётный элемент: {last}");
+                        break;
+                    case "6":
+                        Console.WriteLine($"Индекс элемента 4: {Array.IndexOf(arr, 4)}");
+                        break;
+                    case "7":
+                        Array.Reverse(arr, 0, arr.Length);
+                        Console.Write("Перевёрнутый массив: ");
+                        foreach (int i in arr)
+                            Console.Write($"{i} ");
+                        Console.WriteLine();
+                        break;
+                    case "8":
+                        int[] ar = (int[])arr;
+                        Array.Resize(ref ar, ar.Length + 5);
+                        Console.Write("Массив с пятью дополнительными элементами: ");
+                        foreach (int i in ar)
+                            Console.Write($"{i} ");
+                        Console.WriteLine();
+                        break;
+                    case "9":
+                        Array.Sort(arr);
+                        Console.Write("Отсортированный массив: ");
+                        foreach (int i in arr)
+                            Console.Write($"{i} ");
+                        Console.WriteLine();
+                        break;
+                    case "10":
+                        end = true;
+                        break;
+                }
+                if (!end)
+                {
+                    Console.WriteLine("\nНажмите любую кнопку для продолжения...");
+                    Console.ReadKey();
+                }
+                Console.Clear();
+            }
+        }
+    }
+}
