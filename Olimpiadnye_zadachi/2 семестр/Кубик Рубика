@@ -1,0 +1,62 @@
+def rotation(big, small, step):
+    while step != 0:
+        if big == minBorder and small == minBorder:
+            small += 1
+        elif big == maxBorder and small == maxBorder:
+            small -= 1
+        elif big == minBorder and small == maxBorder:
+            big += 1
+        elif big == maxBorder and small == minBorder:
+            big -= 1
+        elif big == minBorder and small < maxBorder:
+            small += 1
+        elif small == maxBorder and big < maxBorder:
+            big += 1
+        elif big == maxBorder and small > minBorder:
+            small -= 1
+        elif small == minBorder and big > minBorder:
+            big -= 1
+        step -= 1
+    return big, small
+
+with open("input_s1_15.txt") as f:
+    n, m = map(int, f.readline().split())
+    x, y, z = map(int, f.readline().split())
+    for i in range(m):
+        axis, row, direction = f.readline().split()
+        center = (n-1)/2 + 1
+        if axis == "X":
+            if x == int(row):
+                distance = max(abs(y - center), abs(z - center))
+                if distance == 0:
+                    continue
+                step = distance / 0.5
+                minBorder, maxBorder = center - distance, center + distance
+                if direction == "1":
+                    y, z = rotation(y, z, step)
+                else:
+                    z, y = rotation(z, y, step)
+        elif axis == "Y":
+            if y == int(row):
+                distance = max(abs(x - center), abs(z - center))
+                if distance == 0:
+                    continue
+                step = distance / 0.5
+                minBorder, maxBorder = center - distance, center + distance
+                if direction == "1":
+                    x, z = rotation(x, z, step)
+                else:
+                    z, x = rotation(z, x, step)
+        elif axis == "Z":
+            if z == int(row):
+                distance = max(abs(x - center), abs(y - center))
+                if distance == 0:
+                    continue
+                step = distance / 0.5
+                minBorder, maxBorder = center - distance, center + distance
+                if direction == "1":
+                    x, y = rotation(x, y, step)
+                else:
+                    y, x = rotation(y, x, step)
+    print(x, y, z)
+
