@@ -1,0 +1,55 @@
+def func(current, paths, answer, first_iter):
+    if current[0][0] == current[-1][-1]:
+        loop_num = min(paths.count(i) for i in current) + 1
+        if loop_num > 0:
+            current *= loop_num
+        temp = []
+        for i in current:
+            temp += [i] * (paths.count(i) - loop_num)
+            paths = temp
+        answer.append(current)
+    p = list(set([i for i in paths if i[0] == current[-1][-1]]))
+    if len(p) == 0:
+        if first_iter:
+            answer.sort(key=lambda x: len(x), reverse=True)
+            return len(answer[0]), answer[0]
+        return
+    for i in p:
+        a = [i for i in current]
+        a.append(i)
+        b = [i for i in paths]
+        b.remove(i)
+        func(a, b, answer, False)
+    if first_iter:
+        answer.sort(key = lambda x: len(x), reverse=True)
+        return len(answer[0]), answer[0]
+
+with open("input_s1_04.txt") as f:
+    words = []
+    while True:
+        a = f.readline().strip()
+        if a == "":
+            break
+        else:
+            words.append(a[0]+a[-1])
+
+    ans = []
+
+    while True:
+        max_len = 0
+        max_chain = []
+        for i in list(set(words)):
+            k = [j for j in words]
+            k.remove(i)
+            result = func([i], k, [], True)
+            if result is not None:
+                if result[0] > max_len:
+                    max_len, max_chain = result[0], result[1]
+        if max_len == 0:
+            print(len(ans))
+            for i in ans:
+                print(i)
+            break
+        ans.append(max_len)
+        for i in max_chain:
+            words.remove(i)
