@@ -1,0 +1,67 @@
+def AddPeaks(peak, ans):
+    arr = []
+    for i in graph:
+        if i[0] == peak and i[1] not in ans:
+            arr.append(i[1])
+        elif i[1] == peak and i[0] not in ans:
+            arr.append(i[0])
+    return arr
+
+with open("input_s1_13.txt") as f:
+    n, m = map(int, f.readline().split())
+    gears_data = {}
+    gear_chains = [[]]
+    for i in range(n):
+        a, b = map(int, f.readline().split())
+        gears_data[a] = b
+        gear_chains[0].append(a)
+    graph = []
+    for i in range(m):
+        a, b = map(int, f.readline().split())
+        graph.append(sorted([a, b]))
+
+    start, end = map(int, f.readline().split())
+    direction = int(f.readline())
+
+    rotations = {start: direction}
+    for i in gear_chains[0]:
+        if i != start:
+            rotations[i] = 0
+    stop = False
+    for i in sorted(graph):
+        if rotations[i[1]] == 0 and rotations[i[0]] != 0:
+            rotations[i[1]] = -rotations[i[0]]
+        if rotations[i[1]] != 0 and rotations[i[0]] != 0:
+            if rotations[i[1]] == rotations[i[0]]:
+                stop = True
+                print(-1)
+                break
+
+    if not stop:
+        found = False
+
+        for i in gear_chains:
+            if start in i and end in i:
+                found = True
+
+                current_iteration = [start]
+                marked_peaks = [start]
+                counter = 1
+
+                while end not in current_iteration:
+                    temp = []
+                    for k in current_iteration:
+                        for j in i:
+                            if j in marked_peaks:
+                                continue
+                            if sorted([k, j]) in graph:
+                                temp.append(j)
+                                marked_peaks.append(j)
+                    current_iteration = temp
+                    counter += 1
+
+                print(1)
+                print(direction * (-1)**(counter+1))
+                print("{an:.3f}".format(an = gears_data[start]/gears_data[end]))
+                break
+        if not found: print(-1)
