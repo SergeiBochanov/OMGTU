@@ -1,0 +1,79 @@
+import math
+
+with open("input_s1_01.txt") as f:
+    n = int(f.readline())
+    words = []
+    for i in range(n):
+        strg = f.readline().strip()
+        words.append(strg[0] + strg[-1])
+    k = int(f.readline())
+    start = {}
+    for i in range(k):
+        strg = f.readline().strip().split()
+        start[strg[0]] = int(strg[1])
+    p = int(f.readline())
+    end = {}
+    for i in range(p):
+        strg = f.readline().strip().split()
+        end[strg[0]] = int(strg[1])
+
+    combinations_start = {}
+    combinations_end = {}
+    for i in start:
+        for j in end:
+            min_words = min(words.count(i+j), start[i], end[j])
+            if i not in combinations_start:
+                combinations_start[i] = 0
+            combinations_start[i] += min_words
+            if j not in combinations_end:
+                combinations_end[j] = 0
+            combinations_end[j] += min_words
+
+    answer = 0
+
+    temp = [i for i in words]
+    for i in words:
+        first, last = i[0], i[-1]
+        if first not in start or last not in end:
+            temp.remove(i)
+            continue
+    words = [i for i in temp]
+
+    if len(words) != 0:
+        while True:
+            quit = True
+            flag = False
+            min_loss = [math.inf, '--']
+            for i in words:
+                first, last = i[0], i[-1]
+                if start[first] == 0 and end[last] == 0:
+                    continue
+                if start[first] - 1 > 0 and end[last] - 1 > 0:
+                    quit = False
+                    flag = False
+                    answer += 1
+                    words.remove(i)
+                    combinations_start[first] -= 1
+                    combinations_end[last] -= 1
+                    start[first] -= 1
+                    end[last] -= 1
+                    break
+                elif start[first] - 1 >= 0 and end[last] - 1 >= 0:
+                    eval = 0
+                    if start[first] - 1 == 0:
+                        eval += combinations_start[first]
+                    if end[last] - 1 == 0:
+                        eval += combinations_end[last]
+                    if eval < min_loss[0] and eval != 0:
+                        flag = True
+                        quit = False
+                        min_loss = [eval, i]
+            if quit:
+                break
+            if flag:
+                answer += 1
+                words.remove(min_loss[1])
+                start[min_loss[1][0]] -= 1
+                end[min_loss[1][-1]] -= 1
+        print(answer)
+    else: print(0)
